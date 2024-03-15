@@ -8,7 +8,6 @@ import threading
 
 from torch import optim
 from src.active_learner.simple_active_learner import SimpleActiveLearner
-from src.active_learning_technique.bait_al_technique import BaitALTechnique
 from src.active_learning_technique.qbc_al_technique import QueryByCommiteeALTechnique
 from src.active_learning_technique.lcs_al_technique import LCSALTechnique
 from src.active_learning_technique.query_by_committee.decision_tree import DecisionTree

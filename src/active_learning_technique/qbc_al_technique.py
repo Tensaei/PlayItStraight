@@ -22,11 +22,13 @@ class QueryByCommiteeALTechnique(AbstractALTechnique):
 
         # selecting more disagreeded samples
         result = []
+        agreements = []
         best_index = (-disagreements).argsort()[:n_samples_to_select]
         for best_sample_index in best_index:
             result.append(x[best_sample_index])
+            agreements.append(disagreements[best_sample_index] * -1)
 
-        return result
+        return result, agreements
 
     def update(self, dataset):
         for model in self.models:

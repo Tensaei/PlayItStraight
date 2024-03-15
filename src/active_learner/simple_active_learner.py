@@ -29,7 +29,10 @@ class SimpleActiveLearner:
         clprint("Loss: {}\nAccuracy: {}".format(loss, accuracy), Reason.LIGHT_INFO_TRAINING, loggable=True)
 
     def _select_next_samples(self, n_samples_to_select):
-        xs = self.al_technique.select_samples(self.dataset.get_unlabeled_data(), n_samples_to_select)
-        self.dataset.annotate(xs)
+        samples, scores = self.al_technique.select_samples(self.dataset.get_unlabeled_data(), n_samples_to_select)
+        #TODO
+
+
+        self.dataset.annotate(samples)
         clprint("Updating AL technique...".format(self.n_samples_to_select), Reason.LIGHT_INFO_TRAINING)
         self.al_technique.update(self.dataset)
