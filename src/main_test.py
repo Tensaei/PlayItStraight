@@ -15,7 +15,10 @@ xt = numpy.ones((60, 10, 100))
 print(xt[idxs_unlabeled])
 '''
 
+if __name__ == "__main__":
+    print("OOOOOOOPXFUNGE")
 
-emb = numpy.zeros([10, 100, 22])
+    emb = numpy.zeros([10, 100, 22])
 
-print(emb.shape)
+    print(emb.shape)
+    print(emb.shape)

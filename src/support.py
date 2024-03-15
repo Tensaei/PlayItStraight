@@ -35,6 +35,7 @@ log_path = "{}/log_{}.txt"
 reconstruction_image_path = "{}/reconstruction_images_{}.pdf".format(results_path, model_name)
 latent_space_distribution_path = "{}/latent_space_distribution_{}.pdf".format(results_path, model_name)
 
+
 # support variables
 _time = 0
 _called = False
