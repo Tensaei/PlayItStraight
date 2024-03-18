@@ -140,12 +140,12 @@ if __name__ == "__main__":
     sum_memory_usage = 0
     start_time = support.get_time_in_millis()
 
-    clprint("-"*100, Reason.INFO_TRAINING, loggable=True)
-    clprint("Plain training configuration -> epochs: {}, n_samples: {}".format(incremental_training_steps * incremental_training_epochs, plain_n_samples_at_start), Reason.INFO_TRAINING, loggable=True)
-    clprint("Samples used: {}".format(plain_n_samples_at_start), Reason.INFO_TRAINING, loggable=True)
-    dataset_class, model, criterion, optimizer = load_data_and_model(sys.argv[1])
-    plain_training(model, incremental_training_steps, incremental_training_epochs, criterion, optimizer, plain_n_samples_at_start, dataset_class)
-    clprint("CPU usage: {}\nMemory usage: {}\nElapsed time: {}".format((sum_cpu_percent/counts), (sum_memory_usage/counts), (support.get_time_in_millis() - start_time)), Reason.OTHER, loggable=True)
+    # clprint("-"*100, Reason.INFO_TRAINING, loggable=True)
+    # clprint("Plain training configuration -> epochs: {}, n_samples: {}".format(incremental_training_steps * incremental_training_epochs, plain_n_samples_at_start), Reason.INFO_TRAINING, loggable=True)
+    # clprint("Samples used: {}".format(plain_n_samples_at_start), Reason.INFO_TRAINING, loggable=True)
+    # dataset_class, model, criterion, optimizer = load_data_and_model(sys.argv[1])
+    # plain_training(model, incremental_training_steps, incremental_training_epochs, criterion, optimizer, plain_n_samples_at_start, dataset_class)
+    # clprint("CPU usage: {}\nMemory usage: {}\nElapsed time: {}".format((sum_cpu_percent/counts), (sum_memory_usage/counts), (support.get_time_in_millis() - start_time)), Reason.OTHER, loggable=True)
 
     # Incremental training
     counts = 0
@@ -159,7 +159,7 @@ if __name__ == "__main__":
     dataset_class, model, criterion, optimizer = load_data_and_model(sys.argv[1])
 
     if sys.argv[2] == "rnd":
-        incremental_technique = RandomALTechnique()
+        incremental_technique = RandomALTechnique(model)
     
     elif sys.argv[2] == "lcs":
         incremental_technique = LCSALTechnique(model)

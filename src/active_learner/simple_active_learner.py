@@ -1,4 +1,8 @@
-from src.support import clprint, Reason, get_time_in_millis
+import numpy
+import torch
+import src.support as support
+
+from src.support import clprint, Reason, get_time_in_millis, device
 
 
 class SimpleActiveLearner:
@@ -29,10 +33,33 @@ class SimpleActiveLearner:
         clprint("Loss: {}\nAccuracy: {}".format(loss, accuracy), Reason.LIGHT_INFO_TRAINING, loggable=True)
 
     def _select_next_samples(self, n_samples_to_select):
-        samples, scores = self.al_technique.select_samples(self.dataset.get_unlabeled_data(), n_samples_to_select)
-        #TODO
+        x, y = self.dataset.get_unselected_data()
+        outputs, t_scores = self.al_technique.evaluate_samples(x)
+        # combining AL score with comparison of real output with calculated output
+        quantity_classes = max(y) + 1
+        scores = []
+        for i in range(len(x)):
+            #diff = torch.linalg.norm(torch.tensor(numpy.eye(quantity_classes)[y[i]]).to(support.device) - outputs[i])
+            #scores.append(t_scores[i].item() + diff.item())
+            scores.append(t_scores[i].item())
 
+        # balancing the data by taking the same amount from each class
+        def sort_by_float(current_tuple):
+            return current_tuple[0]
 
-        self.dataset.annotate(samples)
+        combined_list = list(zip(scores, x, y))
+        combined_list = sorted(combined_list, key=sort_by_float, reverse=True)
+        scores, x, y = zip(*combined_list)
+
+        n_samples_to_select_for_each_class = int(n_samples_to_select/quantity_classes)
+        counters_for_classes = [0] * quantity_classes
+        selected_x = []
+        for i in range(len(x)):
+            current_class = y[i]
+            if counters_for_classes[current_class] < n_samples_to_select_for_each_class:
+                counters_for_classes[current_class] += 1
+                selected_x.append(x[i])
+
+        self.dataset.annotate(selected_x)
         clprint("Updating AL technique...".format(self.n_samples_to_select), Reason.LIGHT_INFO_TRAINING)
         self.al_technique.update(self.dataset)

@@ -52,8 +52,8 @@ class AbstractALDataset:
     def __len__(self):
         return len(self.x_labeled)
 
-    def get_unlabeled_data(self):
-        return list(self.unlabeled_dict.keys())
+    def get_unselected_data(self):
+        return list(self.unlabeled_dict.keys()), [self.unlabeled_dict.get(i) for i in self.unlabeled_dict.keys()]
 
     def annotate(self, x_to_label):
         for key in x_to_label:
