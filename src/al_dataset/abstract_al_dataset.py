@@ -4,7 +4,7 @@ import random
 
 import src.support as support
 from src.al_dataset.dataset import Dataset
-from torch.utils.data import DataLoader
+from torch.utils.data.dataloader import DataLoader
 
 
 class AbstractALDataset:
@@ -49,16 +49,24 @@ class AbstractALDataset:
             self.test_y[i] = label
             i += 1
 
+        self.quantity_classes = int(max(self.test_y) + 1)
+
     def __len__(self):
         return len(self.x_labeled)
 
     def get_unselected_data(self):
-        return list(self.unlabeled_dict.keys()), [self.unlabeled_dict.get(i) for i in self.unlabeled_dict.keys()]
+        x = list(self.unlabeled_dict.keys())
+        return x, [self.unlabeled_dict[i] for i in x]
 
     def annotate(self, x_to_label):
         for key in x_to_label:
             self.x_labeled.append(key)
             self.y_labeled.append(self.unlabeled_dict.pop(key))
+
+    def annotate_and_replace(self, x_to_label, x_to_replace):
+        for i in range(len(x_to_label)):
+            self.x_labeled.append(x_to_replace[i])
+            self.y_labeled.append(self.unlabeled_dict.pop(x_to_label[i]))
 
     def supply_annotation(self, xs, ys):
         for i in range(len(xs)):

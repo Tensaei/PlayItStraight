@@ -52,7 +52,7 @@ class Fashion_MNIST_nn(nn.Module):
             optimizer.zero_grad()
             output = self(data.to(self.device))
             loss = criterion(output.to(self.device), target.to(self.device))
-            loss.backward()
+            loss.backward(retain_graph=True)
             optimizer.step()
 
     def evaluate(self, criterion, test_loader):

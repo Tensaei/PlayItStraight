@@ -1,0 +1,55 @@
+Dataset selected: fmnist
+----------------------------------------------------------------------------------------------------
+Incremental training configuration -> epochs: 10, steps, 10, n_start_samples: 1000, n_select_samples: 1000, early_stopping_threshold: 90.0
+Samples used: 11000
+AL technique selected: lcs
+Incremental technique selected is LCSALTechnique!
+Starting training with 1000 samples!
+Loss: 0.0043216477453708645
+Accuracy: 82.45999908447266
+Making n.1/10 AL epochs...
+Elapsed time: 72532
+Loss: 0.004405289739370346
+Accuracy: 84.88999938964844
+Making n.2/10 AL epochs...
+Elapsed time: 69428
+Loss: 0.0049498699575662615
+Accuracy: 84.30000305175781
+Making n.3/10 AL epochs...
+Elapsed time: 77712
+Loss: 0.007117263290286064
+Accuracy: 83.09000396728516
+Making n.4/10 AL epochs...
+Elapsed time: 73461
+Loss: 0.007486705791950226
+Accuracy: 83.63999938964844
+Making n.5/10 AL epochs...
+Elapsed time: 73976
+Loss: 0.008301973092556
+Accuracy: 84.97000122070312
+Making n.6/10 AL epochs...
+Elapsed time: 72204
+Loss: 0.0067268379151821135
+Accuracy: 86.72000122070312
+Making n.7/10 AL epochs...
+Elapsed time: 71244
+Loss: 0.008176933804154397
+Accuracy: 85.69999694824219
+Making n.8/10 AL epochs...
+Elapsed time: 84538
+Loss: 0.007565920928120613
+Accuracy: 86.83000183105469
+Making n.9/10 AL epochs...
+Elapsed time: 67778
+Loss: 0.009306138026714325
+Accuracy: 82.66000366210938
+Making n.10/10 AL epochs...
+Elapsed time: 69335
+Loss: 0.007647593855857849
+Accuracy: 87.37000274658203
+Loss: 0.007647593855857849
+Accuracy: 87.37000274658203
+Reached in 1301 seconds
+CPU usage: 135.73236862147743
+Memory usage: 781.9864843154988
+Elapsed time: 1316545

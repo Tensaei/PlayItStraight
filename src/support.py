@@ -1,6 +1,7 @@
 import os
 import torch
 import time
+import numpy
 import warnings
 
 from enum import Enum
@@ -17,13 +18,18 @@ vae_training_epochs = 50
 n_neighbors = 3
 
 model_batch_size = 128
-model_learning_rate = 1e-3
+model_learning_rate = 3e-4 #1e-3
 model_momentum = 0.5
 input_shape = (28, 28)
 
 # fixed setup code
 os.environ["CUDA_VISIBLE_DEVICES"] = "0"
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
+seed = 7373737
+numpy.random.seed(seed)
+torch.manual_seed(seed)
+torch.cuda.manual_seed(seed)
 
 # paths
 model_name = "mnist_vae"
@@ -34,7 +40,6 @@ model_copy_path = "{}/{}_copy.nn".format(results_path, model_name)
 log_path = "{}/log_{}.txt"
 reconstruction_image_path = "{}/reconstruction_images_{}.pdf".format(results_path, model_name)
 latent_space_distribution_path = "{}/latent_space_distribution_{}.pdf".format(results_path, model_name)
-
 
 # support variables
 _time = 0
@@ -96,3 +101,7 @@ def warm_up():
     clprint("Running on {}...".format(device), Reason.SETUP_TRAINING)
     if not os.path.isdir(results_path):
         os.mkdir(results_path)
+
+
+def str2bool(v):
+  return v.lower() in ("yes", "true", "t", "1")

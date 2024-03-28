@@ -1,29 +1,45 @@
 import numpy
 import torch
-import src.support as support
 
-from src.support import clprint, Reason, get_time_in_millis, device
+from torch import nn
+from enum import Enum
+from src import support
+from src.support import clprint, Reason, get_time_in_millis
+
+
+class SelectionPolicy(Enum):
+    L2 = 1
+    KL = 3
 
 
 class SimpleActiveLearner:
 
-    def __init__(self, dataset, al_technique):
+    def __init__(self, dataset, al_technique, target_accuracy, selection_policy):
         self.dataset = dataset
         self.al_technique = al_technique
         self.n_samples_to_select = -1
+        self.target_accuracy = target_accuracy
+        self.selection_policy = selection_policy
 
-    def elaborate(self, model, al_epochs, training_epochs, n_samples_to_select, criterion, optimizer):
+    def elaborate(self, model, training_epochs, n_samples_to_select, criterion, optimizer):
         self.n_samples_to_select = n_samples_to_select
         clprint("Starting Active Learning process...", Reason.INFO_TRAINING)
         self._train_model(criterion, model, optimizer, training_epochs)
-        for i in range(al_epochs):
-            clprint("Making n.{}/{} AL epochs...".format(i + 1, al_epochs), Reason.INFO_TRAINING, loggable=True)
+        accuracy = 0
+        i = 1
+        total_epochs = 0
+        while accuracy < self.target_accuracy:
+            clprint("Making n.{} AL epochs...".format(i), Reason.INFO_TRAINING, loggable=True)
             clprint("Selecting {} new samples...".format(self.n_samples_to_select), Reason.INFO_TRAINING)
             start_time = get_time_in_millis()
             self._select_next_samples(self.n_samples_to_select)
             end_time = get_time_in_millis()
             clprint("Elapsed time: {}".format(end_time - start_time), Reason.LIGHT_INFO_TRAINING, loggable=True)
-            self._train_model(criterion, model, optimizer, training_epochs)
+            accuracy = self._train_model(criterion, model, optimizer, training_epochs)
+            i += 1
+            total_epochs += training_epochs
+
+        return total_epochs
 
     def _train_model(self, criterion, model, optimizer, training_epochs):
         clprint("Training model...", Reason.INFO_TRAINING)
@@ -31,35 +47,28 @@ class SimpleActiveLearner:
         clprint("Evaluating model...", Reason.INFO_TRAINING)
         loss, accuracy = model.evaluate(criterion, self.dataset.get_test_loader())
         clprint("Loss: {}\nAccuracy: {}".format(loss, accuracy), Reason.LIGHT_INFO_TRAINING, loggable=True)
+        return accuracy
 
     def _select_next_samples(self, n_samples_to_select):
         x, y = self.dataset.get_unselected_data()
-        outputs, t_scores = self.al_technique.evaluate_samples(x)
-        # combining AL score with comparison of real output with calculated output
+        selected_x, model_y, selected_y, t_scores = self.al_technique.select_samples(x, y, n_samples_to_select * 2)
         quantity_classes = max(y) + 1
         scores = []
-        for i in range(len(x)):
-            #diff = torch.linalg.norm(torch.tensor(numpy.eye(quantity_classes)[y[i]]).to(support.device) - outputs[i])
-            #scores.append(t_scores[i].item() + diff.item())
-            scores.append(t_scores[i].item())
+        for i in range(len(selected_x)):
+            if self.selection_policy == SelectionPolicy.L2:
+                diff = torch.linalg.norm(torch.tensor(numpy.eye(quantity_classes)[y[i]]).to(support.device) - model_y[i].to(support.device))
+                scores.append(t_scores[i].item() + diff.item())
 
-        # balancing the data by taking the same amount from each class
+            elif self.selection_policy == SelectionPolicy.KL:
+                diff = torch.nn.functional.kl_div(torch.tensor(numpy.eye(quantity_classes)[y[i]]).to(support.device), model_y[i].to(support.device), reduction="mean")
+                scores.append(t_scores[i].item() + diff.item())
+
         def sort_by_float(current_tuple):
             return current_tuple[0]
 
-        combined_list = list(zip(scores, x, y))
+        combined_list = list(zip(scores, selected_x))
         combined_list = sorted(combined_list, key=sort_by_float, reverse=True)
-        scores, x, y = zip(*combined_list)
-
-        n_samples_to_select_for_each_class = int(n_samples_to_select/quantity_classes)
-        counters_for_classes = [0] * quantity_classes
-        selected_x = []
-        for i in range(len(x)):
-            current_class = y[i]
-            if counters_for_classes[current_class] < n_samples_to_select_for_each_class:
-                counters_for_classes[current_class] += 1
-                selected_x.append(x[i])
-
-        self.dataset.annotate(selected_x)
+        _, selected_x = zip(*combined_list)
+        self.dataset.annotate(selected_x[:n_samples_to_select])
         clprint("Updating AL technique...".format(self.n_samples_to_select), Reason.LIGHT_INFO_TRAINING)
         self.al_technique.update(self.dataset)
