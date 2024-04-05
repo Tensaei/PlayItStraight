@@ -28,7 +28,7 @@ class AbstractALDataset:
         random.shuffle(map_training_dataset)
         x_dataset, y_dataset = zip(*map_training_dataset)
         for i in range(len(train_dataset)):
-            if i < quantity_samples:
+            if quantity_samples == -1 or i < quantity_samples:
                 self.x_labeled.append(x_dataset[i])
                 self.y_labeled.append(y_dataset[i])
 
@@ -54,9 +54,26 @@ class AbstractALDataset:
     def __len__(self):
         return len(self.x_labeled)
 
-    def get_unselected_data(self):
-        x = list(self.unlabeled_dict.keys())
-        return x, [self.unlabeled_dict[i] for i in x]
+    def get_unselected_data(self, pool_size=-1):
+        if pool_size == -1:
+            x = list(self.unlabeled_dict.keys())
+            return x, [self.unlabeled_dict[i] for i in x]
+
+        else:
+            quantity_per_class = int(pool_size/self.quantity_classes)
+            x = list(self.unlabeled_dict.keys())
+            random.shuffle(x)
+            counters_for_classes = [0] * self.quantity_classes
+            balanced_x = []
+            balanced_y = []
+            for i in x:
+                current_class = self.unlabeled_dict[i]
+                if counters_for_classes[current_class] < quantity_per_class:
+                    counters_for_classes[current_class] += 1
+                    balanced_x.append(i)
+                    balanced_y.append(current_class)
+
+            return balanced_x, balanced_y
 
     def annotate(self, x_to_label):
         for key in x_to_label:

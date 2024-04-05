@@ -1,0 +1,21 @@
+Dataset selected: cifar10
+Running on cuda...
+----------------------------------------------------------------------------------------------------
+Plain training configuration -> target accuracy: 70.0, n_samples: all
+Samples used: all
+Files already downloaded and verified
+Files already downloaded and verified
+Loading dataset...
+Starting training with all samples!
+Plain training model...
+Evaluating model...
+Loss: 0.005790516406297684
+Accuracy: 76.8499984741211
+Reached in 20 seconds
+Loss: 0.005790516406297684
+Accuracy: 76.8499984741211
+Reached in 20 seconds
+CPU usage: 95.42400000000002
+Memory usage: 5890.59765625
+Elapsed time: 24 seconds
+Epochs elapsed: 5

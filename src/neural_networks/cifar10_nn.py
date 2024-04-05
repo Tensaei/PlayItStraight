@@ -46,7 +46,7 @@ class Cifar10_nn(nn.Module):
         x = self.fc3(x)
         x = F.relu(x)
         logits = self.fc4(x)
-        return logits
+        return logits#, F.softmax(logits)
 
     def detailed_forward(self, x):
         x = self.conv1(x)
@@ -71,7 +71,7 @@ class Cifar10_nn(nn.Module):
         x = self.fc3(x)
         x = F.relu(x)
         logits = self.fc4(x)
-        return x, logits
+        return logits#, F.softmax(logits)
 
     def _train_epoch(self, optimizer, train_loader, criterion):
         self.train()
@@ -101,7 +101,7 @@ class Cifar10_nn(nn.Module):
             self._train_epoch(optimizer, train_loader, criterion)
 
     def get_embedding_dim(self):
-        return 1
+        return 10
 
     def save(self, path):
         torch.save(self.state_dict(), path)

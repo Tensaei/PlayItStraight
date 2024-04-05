@@ -18,7 +18,7 @@ vae_training_epochs = 50
 n_neighbors = 3
 
 model_batch_size = 128
-model_learning_rate = 3e-4 #1e-3
+model_learning_rate = 3e-4  # 1e-3
 model_momentum = 0.5
 input_shape = (28, 28)
 
