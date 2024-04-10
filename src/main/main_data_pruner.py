@@ -1,18 +1,24 @@
 import sys
 import os
+sys.path.append(os.path.abspath('.'))
+
+
 import time
 import psutil
-from torchvision.models.resnet import resnet50
-
 import src.support as support
 import torch
 import threading
 
+from codecarbon import EmissionsTracker
+from torchvision.models.resnet import resnet50
 from torch import optim
 from src.active_learner.simple_active_learner import SimpleActiveLearner, SelectionPolicy
 from src.active_learning_technique.badge_al_technique import BadgeALTechnique
 from src.active_learning_technique.lcs_al_technique import LCSALTechnique
+from src.al_dataset.cifar100_al_dataset import Cifar100ALDataset
 from src.al_dataset.imagenet_al_dataset import ImageNetALDataset
+from src.al_dataset.tiny_imagenet_al_dataset import TinyImageNetALDataset
+from src.neural_networks.cifar100_nn import Cifar100_nn
 from src.support import Reason, clprint
 from src.active_learning_technique.random_al_technique import RandomALTechnique
 from src.neural_networks.mnist_nn import MNIST_nn
@@ -58,6 +64,7 @@ def cutted_training(model, training_epochs, criterion, optimizer, n_samples_at_s
 
 def load_data_and_model(dataset_name, n_samples_at_start):
     if dataset_name == "mnist":
+        clprint("Loading dataset...", Reason.INFO_TRAINING)
         dataset = MNISTALDataset(n_samples_at_start)
         clprint("Loading model...", Reason.INFO_TRAINING)
         model = MNIST_nn(support.device)
@@ -65,6 +72,7 @@ def load_data_and_model(dataset_name, n_samples_at_start):
         optimizer = optim.SGD(model.parameters(), lr=support.model_learning_rate, momentum=support.model_momentum)
 
     elif dataset_name == "fmnist":
+        clprint("Loading dataset...", Reason.INFO_TRAINING)
         dataset = FashionMNISTALDataset(n_samples_at_start)
         clprint("Loading model...", Reason.INFO_TRAINING)
         model = Fashion_MNIST_nn(support.device)
@@ -72,13 +80,30 @@ def load_data_and_model(dataset_name, n_samples_at_start):
         optimizer = torch.optim.Adam(model.parameters(), lr=support.model_learning_rate)
 
     elif dataset_name == "cifar10":
+        clprint("Loading dataset...", Reason.INFO_TRAINING)
         dataset = Cifar10ALDataset(n_samples_at_start)
         model = Cifar10_nn(support.device)
         criterion = torch.nn.CrossEntropyLoss()
         optimizer = torch.optim.Adam(model.parameters(), lr=support.model_learning_rate, betas=(0.9,0.995), weight_decay=5e-4)
 
+    elif dataset_name == "cifar100":
+        clprint("Loading dataset...", Reason.INFO_TRAINING)
+        dataset = Cifar100ALDataset(n_samples_at_start)
+        model = Cifar100_nn(3, 100, support.device)
+        criterion = torch.nn.CrossEntropyLoss()
+        optimizer = torch.optim.Adam(model.parameters(), lr=support.model_learning_rate)
+
     elif dataset_name == "imagenet":
+        clprint("Loading dataset...", Reason.INFO_TRAINING)
         dataset = ImageNetALDataset(n_samples_at_start)
+        model = resnet50(weights=None)
+        model.to(support.device)
+        criterion = torch.nn.CrossEntropyLoss()
+        optimizer = torch.optim.Adam(model.parameters(), lr=support.model_learning_rate)
+
+    elif dataset_name == "tinyimagenet":
+        clprint("Loading dataset...", Reason.INFO_TRAINING)
+        dataset = TinyImageNetALDataset(n_samples_at_start)
         model = resnet50(weights=None)
         model.to(support.device)
         criterion = torch.nn.CrossEntropyLoss()
@@ -124,7 +149,7 @@ if __name__ == "__main__":
 
     if len(sys.argv) < 8:
         clprint("You  should put these params:"
-                "\n\t - dataset to test (mnist, fminst, cifar10, imagenet);"
+                "\n\t - dataset to test (mnist, fminst, cifar10, cifar100, imagenet, tinyimagenet);"
                 "\n\t - al technique (rnd, lcs, badge);"
                 "\n\t - device (cpu, gpu [if available]);"
                 "\n\t - target_accuracy (value between 0 and 100);"
@@ -158,12 +183,15 @@ if __name__ == "__main__":
     start_time = support.get_time_in_millis()
 
     if not skip_classic_training:
+        tracker = EmissionsTracker()
+        tracker.start()
         clprint("-"*100, Reason.INFO_TRAINING, loggable=True)
         clprint("Plain training configuration -> target accuracy: {}, n_samples: all".format(target_accuracy), Reason.INFO_TRAINING, loggable=True)
         clprint("Samples used: all", Reason.INFO_TRAINING, loggable=True)
         dataset, model, criterion, optimizer = load_data_and_model(dataset_selected, -1)
         total_epochs = plain_training(model, target_accuracy, incremental_training_epochs, criterion, optimizer, dataset)
         clprint("CPU usage: {}\nMemory usage: {}\nElapsed time: {} seconds\nEpochs elapsed: {}".format((sum_cpu_percent/counts), (sum_memory_usage/counts), int((support.get_time_in_millis() - start_time) / 1000), total_epochs), Reason.OTHER, loggable=True)
+        tracker.stop()
 
     else:
         clprint("Skipping plain training!", Reason.WARNING, loggable=True)
@@ -196,10 +224,13 @@ if __name__ == "__main__":
     elif al_technique_selected == "badge":
         incremental_technique = BadgeALTechnique(model, dataset)
 
+    tracker = EmissionsTracker()
+    tracker.start()
     clprint("AL technique selected: {}".format(sys.argv[2]), Reason.INFO_TRAINING, loggable=True)
     clprint("Incremental technique selected is {}!".format(incremental_technique.__class__.__name__), Reason.INFO_TRAINING, loggable=True)
     total_epochs = cutted_training(model, incremental_training_epochs, criterion, optimizer, incremental_n_samples_at_start, incremental_n_samples_to_select, dataset, incremental_technique, target_accuracy, selection_policy, pool_size)
     clprint("Samples used: {}".format(int(incremental_n_samples_at_start + (incremental_n_samples_to_select * (total_epochs/incremental_training_epochs)))), Reason.INFO_TRAINING, loggable=True)
     clprint("CPU usage: {}\nMemory usage: {}\nElapsed time: {} seconds\nEpochs elapsed: {}".format((sum_cpu_percent / counts), (sum_memory_usage / counts), int((support.get_time_in_millis() - start_time) / 1000), total_epochs), Reason.OTHER, loggable=True)
+    tracker.stop()
 
     completed = True

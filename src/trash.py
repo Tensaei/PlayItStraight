@@ -185,3 +185,20 @@ def plain_training(model, plain_training_epochs, incremental_training_epochs, cr
         clprint("Loss: {}\nAccuracy: {}\nReached in {} seconds".format(loss, accuracy, int(elapsed_time / 1000)), reason, loggable=True)
 
 '''
+
+import logging
+from codecarbon import EmissionsTracker
+logging.basicConfig(filename='codecarbon_log.txt', level=logging.INFO, format='%(message)s')
+
+from src.support import clprint, Reason
+
+tracker = EmissionsTracker()
+tracker.start()
+try:
+     # Compute intensive code goes here
+     for i in range(99999):
+         print("{}".format(i))
+finally:
+     res = tracker.stop()
+     print("+"*100)
+     print(res)

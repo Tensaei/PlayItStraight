@@ -19,7 +19,7 @@ class AbstractALDataset:
         self.test_dict = {}
         x_dataset = []
         y_dataset = []
-        for _, data in enumerate(train_dataset):
+        for i, data in enumerate(train_dataset):
             image, label = data
             x_dataset.append(image)
             y_dataset.append(label)
@@ -79,20 +79,6 @@ class AbstractALDataset:
         for key in x_to_label:
             self.x_labeled.append(key)
             self.y_labeled.append(self.unlabeled_dict.pop(key))
-
-    def annotate_and_replace(self, x_to_label, x_to_replace):
-        for i in range(len(x_to_label)):
-            self.x_labeled.append(x_to_replace[i])
-            self.y_labeled.append(self.unlabeled_dict.pop(x_to_label[i]))
-
-    def supply_annotation(self, xs, ys):
-        for i in range(len(xs)):
-            self.x_labeled.append(xs[i])
-            self.y_labeled.append(ys[i])
-            self.unlabeled_dict.pop(xs[i])
-
-    def get_all_data_loader(self):
-        return DataLoader(Dataset(self.shape_data, self.x_labeled.extend(self.unlabeled_dict.keys()), None), batch_size=support.model_batch_size)
 
     def get_train_loader(self):
         return DataLoader(Dataset(self.shape_data, self.x_labeled, self.y_labeled), batch_size=support.model_batch_size)

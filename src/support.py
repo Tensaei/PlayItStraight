@@ -17,7 +17,7 @@ vae_learning_rate = 1e-3
 vae_training_epochs = 50
 n_neighbors = 3
 
-model_batch_size = 128
+model_batch_size = 64
 model_learning_rate = 3e-4  # 1e-3
 model_momentum = 0.5
 input_shape = (28, 28)
@@ -33,8 +33,10 @@ torch.cuda.manual_seed(seed)
 
 # paths
 model_name = "mnist_vae"
-dataset_path = "../../dataset/{}/"
-results_path = "../../results"
+#dataset_path = "../../dataset/{}/"
+#results_path = "../../results"
+dataset_path = "dataset/{}/"
+results_path = "results"
 model_path = "{}/{}.nn".format(results_path, model_name)
 model_copy_path = "{}/{}_copy.nn".format(results_path, model_name)
 log_path = "{}/log_{}.txt"

@@ -3,7 +3,7 @@ from src.al_dataset.abstract_al_dataset import AbstractALDataset
 from torchvision import datasets, transforms
 
 
-class ImageNetALDataset(AbstractALDataset):
+class TinyImageNetALDataset(AbstractALDataset):
 
     def __init__(self, quantity_samples):
         transform = transforms.Compose([
@@ -16,6 +16,6 @@ class ImageNetALDataset(AbstractALDataset):
             transforms.ToTensor(),
             transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
         ])
-        train_dataset = datasets.ImageFolder(support.dataset_path.format("imagenet") + "/train", transform=transform)
-        test_dataset = datasets.ImageFolder(support.dataset_path.format("imagenet") + "/val", transform=transform)
-        super(ImageNetALDataset, self).__init__(quantity_samples, test_dataset, train_dataset, (3, 256, 256))
+        train_dataset = datasets.ImageFolder(support.dataset_path.format("tiny-imagenet-200") + "/train", transform=transform)
+        test_dataset = datasets.ImageFolder(support.dataset_path.format("tiny-imagenet-200") + "/val", transform=transform)
+        super(TinyImageNetALDataset, self).__init__(quantity_samples, test_dataset, train_dataset, (3, 256, 256))
