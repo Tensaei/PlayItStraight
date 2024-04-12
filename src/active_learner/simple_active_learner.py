@@ -14,44 +14,38 @@ class SelectionPolicy(Enum):
 
 class SimpleActiveLearner:
 
-    def __init__(self, dataset, al_technique, target_accuracy, selection_policy, pool_size):
+    def __init__(self, dataset, al_technique, selection_policy):
         self.dataset = dataset
         self.al_technique = al_technique
         self.n_samples_to_select = -1
-        self.target_accuracy = target_accuracy
         self.selection_policy = selection_policy
-        self.pool_size = pool_size
 
-    def elaborate(self, model, training_epochs, n_samples_to_select, criterion, optimizer):
+    def elaborate(self, model, target_epochs, step_training_epochs, n_samples_to_select, criterion, optimizer):
         self.n_samples_to_select = n_samples_to_select
+        start_epochs = int(target_epochs / 10)
+        completion_epochs = int(start_epochs * 9)
         clprint("Starting Active Learning process...", Reason.INFO_TRAINING)
-        self._train_model(criterion, model, optimizer, training_epochs)
-        accuracy = 0
-        i = 1
-        total_epochs = 0
-        while accuracy < self.target_accuracy:
-            clprint("Making n.{} AL epochs...".format(i), Reason.INFO_TRAINING, loggable=True)
-            clprint("Selecting {} new samples...".format(self.n_samples_to_select), Reason.INFO_TRAINING)
-            start_time = get_time_in_millis()
-            self._select_next_samples()
-            end_time = get_time_in_millis()
-            clprint("Elapsed time: {} seconds".format(int((end_time - start_time) / 1000)), Reason.LIGHT_INFO_TRAINING, loggable=True)
-            accuracy = self._train_model(criterion, model, optimizer, training_epochs)
-            i += 1
-            total_epochs += training_epochs
+        self._train_model(criterion, model, optimizer, start_epochs, step_training_epochs)
+        clprint("Making one-shot AL process...", Reason.INFO_TRAINING, loggable=True)
+        clprint("Selecting {} new samples...".format(self.n_samples_to_select), Reason.INFO_TRAINING)
+        start_time = get_time_in_millis()
+        self._select_next_samples()
+        end_time = get_time_in_millis()
+        clprint("Elapsed time: {} seconds".format(int((end_time - start_time) / 1000)), Reason.LIGHT_INFO_TRAINING, loggable=True)
+        self._train_model(criterion, model, optimizer, completion_epochs, step_training_epochs)
 
-        return total_epochs
-
-    def _train_model(self, criterion, model, optimizer, training_epochs):
+    def _train_model(self, criterion, model, optimizer, target_epochs, step_training_epochs):
         clprint("Training model...", Reason.INFO_TRAINING)
-        model.fit(training_epochs, criterion, optimizer, self.dataset.get_train_loader())
-        clprint("Evaluating model...", Reason.INFO_TRAINING)
-        loss, accuracy = model.evaluate(criterion, self.dataset.get_test_loader())
-        clprint("Loss: {}\nAccuracy: {}".format(loss, accuracy), Reason.LIGHT_INFO_TRAINING, loggable=True)
-        return accuracy
+        for epoch in range(0, target_epochs, step_training_epochs):
+            start_time = support.get_time_in_millis()
+            model.fit(step_training_epochs, criterion, optimizer, self.dataset.get_train_loader())
+            elapsed_time = support.get_time_in_millis() - start_time
+            clprint("Evaluating model...", Reason.INFO_TRAINING)
+            loss, accuracy = model.evaluate(criterion, self.dataset.get_test_loader())
+            clprint("Loss: {}\nAccuracy: {}\nReached in {} seconds".format(loss, accuracy, int(elapsed_time / 1000)), Reason.LIGHT_INFO_TRAINING, loggable=True)
 
     def _select_next_samples(self):
-        x, y = self.dataset.get_unselected_data(self.pool_size)
+        x, y = self.dataset.get_unselected_data()
         selected_x, model_y, selected_y, t_scores = self.al_technique.select_samples(x, y, self.n_samples_to_select * 2)
 
         if t_scores is None:

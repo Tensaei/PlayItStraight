@@ -23,7 +23,7 @@ model_momentum = 0.5
 input_shape = (28, 28)
 
 # fixed setup code
-os.environ["CUDA_VISIBLE_DEVICES"] = "0"
+os.environ["CUDA_VISIBLE_DEVICES"] = "2"
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 seed = 7373737
@@ -33,10 +33,10 @@ torch.cuda.manual_seed(seed)
 
 # paths
 model_name = "mnist_vae"
-#dataset_path = "../../dataset/{}/"
-#results_path = "../../results"
-dataset_path = "dataset/{}/"
-results_path = "results"
+dataset_path = "../../dataset/{}/"
+results_path = "../../results"
+#dataset_path = "dataset/{}/"
+#results_path = "results"
 model_path = "{}/{}.nn".format(results_path, model_name)
 model_copy_path = "{}/{}_copy.nn".format(results_path, model_name)
 log_path = "{}/log_{}.txt"
