@@ -5,7 +5,8 @@ from torchvision import datasets, transforms
 
 class FashionMNISTALDataset(AbstractALDataset):
 
-    def __init__(self, quantity_samples):
+    def __init__(self, quantity_samples, rs2_enabled):
+        self.input_shape = (28, 28)
         test_dataset = datasets.FashionMNIST(root=support.dataset_path.format("fashion_mnist"), train=False, transform=transforms.ToTensor(), download=True)
         train_dataset = datasets.FashionMNIST(root=support.dataset_path.format("fashion_mnist"), train=True, transform=transforms.ToTensor(), download=True)
-        super(FashionMNISTALDataset, self).__init__(quantity_samples, test_dataset, train_dataset, (28, 28))
+        super(FashionMNISTALDataset, self).__init__(quantity_samples, test_dataset, train_dataset, self.input_shape, rs2_enabled)

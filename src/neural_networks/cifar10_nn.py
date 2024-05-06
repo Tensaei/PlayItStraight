@@ -133,7 +133,7 @@ class Cifar10_nn(nn.Module):
         x = self.fc(x)
         return x #, something
 
-    def _train_epoch(self, optimizer, train_loader, criterion):
+    def _train_epoch(self, optimizer, train_loader, criterion, scheduler):
         self.train()
         for _, (data, target, _) in enumerate(train_loader):
             optimizer.zero_grad()
@@ -141,6 +141,8 @@ class Cifar10_nn(nn.Module):
             loss = criterion(output.to(self.device), target.to(self.device))
             loss.backward()
             optimizer.step()
+            if scheduler is not None:
+                scheduler.step()
 
     def evaluate(self, criterion, test_loader):
         self.eval()
@@ -156,9 +158,9 @@ class Cifar10_nn(nn.Module):
         test_loss /= len(test_loader.dataset)
         return test_loss, (correct / len(test_loader.dataset) * 100)
 
-    def fit(self, epochs, criterion, optimizer, train_loader):
+    def fit(self, epochs, criterion, optimizer, train_loader, scheduler):
         for epoch in range(epochs):
-            self._train_epoch(optimizer, train_loader, criterion)
+            self._train_epoch(optimizer, train_loader, criterion, scheduler)
 
     def get_embedding_dim(self):
         return 10

@@ -45,6 +45,13 @@
           </mappings>
         </serverdata>
       </paths>
+      <paths name="scala@r13.icar.cnr.it:22 password (5)">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/home/scala/projects/DataPruning" local="$PROJECT_DIR$" />
+          </mappings>
+        </serverdata>
+      </paths>
     </serverData>
     <option name="myAutoUpload" value="ALWAYS" />
   </component>

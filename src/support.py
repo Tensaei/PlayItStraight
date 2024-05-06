@@ -26,17 +26,13 @@ input_shape = (28, 28)
 os.environ["CUDA_VISIBLE_DEVICES"] = "2"
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-seed = 7373737
-numpy.random.seed(seed)
-torch.manual_seed(seed)
-torch.cuda.manual_seed(seed)
+random_seed = 1
 
 # paths
 model_name = "mnist_vae"
-dataset_path = "../../dataset/{}/"
-results_path = "../../results"
-#dataset_path = "dataset/{}/"
-#results_path = "results"
+base_path = "/home/scala/projects/DataFiltering/"
+dataset_path = base_path + "dataset/{}/"
+results_path = base_path + "results"
 model_path = "{}/{}.nn".format(results_path, model_name)
 model_copy_path = "{}/{}_copy.nn".format(results_path, model_name)
 log_path = "{}/log_{}.txt"
@@ -104,6 +100,11 @@ def warm_up():
     if not os.path.isdir(results_path):
         os.mkdir(results_path)
 
+    clprint("Current random seed {}!".format(random_seed), Reason.SETUP_TRAINING, loggable=True)
+    numpy.random.seed(random_seed)
+    torch.manual_seed(random_seed)
+    torch.cuda.manual_seed(random_seed)
+
 
 def str2bool(v):
-  return v.lower() in ("yes", "true", "t", "1")
+    return v.lower() in ("yes", "true", "t", "1")

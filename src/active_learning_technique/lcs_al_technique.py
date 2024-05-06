@@ -16,12 +16,13 @@ class LCSALTechnique(AbstractALTechnique):
         confidences = []
         model_outputs = []
         real_outputs = []
+
         for i in range(len(x)):
             # calculating least confidence
             out_model = self.neural_network(torch.unsqueeze(x[i], 0).to(support.device))[0]
             #out_model = self.neural_network(sample.to(support.device))[0]
             simple_least_confidence = numpy.nanmax(out_model.cpu().detach().numpy())
-            normalized_least_confidence = (1 - simple_least_confidence) * (len(out_model) / (len(out_model) - 1))
+            normalized_least_confidence = (1 - simple_least_confidence) * (len(out_model) / (len(out_model) - 1)).detach().numpy()
             # appending
             if len(selected_samples) >= n_samples_to_select:
                 min_confidence = min(confidences)
@@ -43,33 +44,3 @@ class LCSALTechnique(AbstractALTechnique):
                 real_outputs.append(y[i])
 
         return selected_samples, model_outputs, real_outputs, confidences
-
-    # def select_samples(self, x, n_samples_to_select):
-    #     #selected_samples = numpy.empty((n_samples_to_select, *x[0].shape))
-    #     selected_samples = []
-    #     confidences_heap = []
-    #     added = 0
-    #
-    #     for sample in x:
-    #         # calculating least confidence
-    #         out_model = self.neural_network(sample.to(support.device))[0]
-    #         simple_least_confidence = numpy.nanmax(out_model.cpu().detach().numpy())
-    #         normalized_least_confidence = (1 - simple_least_confidence) * (len(out_model) / (len(out_model) - 1))
-    #         # appending
-    #         if added > n_samples_to_select:
-    #             min_confidence, backup_sample = heapq.heappop(confidences_heap)
-    #             if normalized_least_confidence > min_confidence:
-    #                 heapq.heappush(confidences_heap, (normalized_least_confidence, sample))
-    #
-    #             else:
-    #                 heapq.heappush(confidences_heap, (min_confidence, backup_sample))
-    #
-    #         else:
-    #             heapq.heappush(confidences_heap, (normalized_least_confidence, sample))
-    #             added += 1
-    #
-    #     for i in range(n_samples_to_select):
-    #         val = heapq.heappop(confidences_heap)
-    #         selected_samples.append(val[1])
-    #
-    #     return selected_samples

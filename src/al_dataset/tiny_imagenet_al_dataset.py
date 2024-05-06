@@ -5,7 +5,7 @@ from torchvision import datasets, transforms
 
 class TinyImageNetALDataset(AbstractALDataset):
 
-    def __init__(self, quantity_samples):
+    def __init__(self, quantity_samples, rs2_enabled):
         transform = transforms.Compose([
             transforms.Resize(256),
             transforms.RandomHorizontalFlip(),
@@ -18,4 +18,4 @@ class TinyImageNetALDataset(AbstractALDataset):
         ])
         train_dataset = datasets.ImageFolder(support.dataset_path.format("tiny-imagenet-200") + "/train", transform=transform)
         test_dataset = datasets.ImageFolder(support.dataset_path.format("tiny-imagenet-200") + "/val", transform=transform)
-        super(TinyImageNetALDataset, self).__init__(quantity_samples, test_dataset, train_dataset, (3, 256, 256))
+        super(TinyImageNetALDataset, self).__init__(quantity_samples, test_dataset, train_dataset, (3, 256, 256), rs2_enabled)

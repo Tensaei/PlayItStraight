@@ -3,5 +3,5 @@ from src.active_learning_technique.abstract_al_technique import AbstractALTechni
 
 class RandomALTechnique(AbstractALTechnique):
 
-    def select_samples(self, x, n_samples_to_select):
-        return x[:n_samples_to_select]
+    def select_samples(self, x, y, n_samples_to_select):
+        return x[:n_samples_to_select], None, None, None

@@ -1,0 +1,305 @@
+Dataset selected: cifar10
+Running on cuda...
+Skipping plain training!
+----------------------------------------------------------------------------------------------------
+AL one-shot training configuration -> epochs: 100, n_start_samples: 20000, n_select_samples: 10000.
+Loading dataset...
+Files already downloaded and verified
+Files already downloaded and verified
+[codecarbon INFO @ 17:31:56] [setup] RAM Tracking...
+[codecarbon INFO @ 17:31:56] [setup] GPU Tracking...
+[codecarbon INFO @ 17:31:56] Tracking Nvidia GPU via pynvml
+[codecarbon INFO @ 17:31:56] [setup] CPU Tracking...
+[codecarbon WARNING @ 17:31:56] No CPU tracking mode found. Falling back on CPU constant mode.
+[codecarbon WARNING @ 17:31:58] We saw that you have a Intel(R) Xeon(R) CPU E5-2698 v4 @ 2.20GHz but we don't know it. Please contact us.
+[codecarbon INFO @ 17:31:58] CPU Model on constant consumption mode: Intel(R) Xeon(R) CPU E5-2698 v4 @ 2.20GHz
+[codecarbon INFO @ 17:31:58] >>> Tracker's metadata:
+[codecarbon INFO @ 17:31:58]   Platform system: Linux-5.15.0-1045-nvidia-x86_64-with-glibc2.35
+[codecarbon INFO @ 17:31:58]   Python version: 3.10.12
+[codecarbon INFO @ 17:31:58]   CodeCarbon version: 2.3.4
+[codecarbon INFO @ 17:31:58]   Available RAM : 251.605 GB
+[codecarbon INFO @ 17:31:58]   CPU count: 40
+[codecarbon INFO @ 17:31:58]   CPU model: Intel(R) Xeon(R) CPU E5-2698 v4 @ 2.20GHz
+[codecarbon INFO @ 17:31:58]   GPU count: 4
+[codecarbon INFO @ 17:31:58]   GPU model: 4 x Tesla V100-DGXS-32GB
+AL technique selected: rnd
+Incremental technique selected is RandomALTechnique!
+Loading dataset...
+Starting training with 20000 samples!
+Starting incremental training...
+Starting Active Learning process...
+Training model...
+[codecarbon INFO @ 17:32:16] Energy consumed for RAM : 0.000393 kWh. RAM Power : 94.35204792022705 W
+[codecarbon INFO @ 17:32:16] Energy consumed for all GPUs : 0.001290 kWh. Total GPU Power : 309.4256515651844 W
+[codecarbon INFO @ 17:32:16] Energy consumed for all CPUs : 0.000177 kWh. Total CPU Power : 42.5 W
+[codecarbon INFO @ 17:32:16] 0.001861 kWh of electricity used since the beginning.
+[codecarbon INFO @ 17:32:31] Energy consumed for RAM : 0.000787 kWh. RAM Power : 94.35204792022705 W
+[codecarbon INFO @ 17:32:31] Energy consumed for all GPUs : 0.002608 kWh. Total GPU Power : 316.2610128178961 W
+[codecarbon INFO @ 17:32:31] Energy consumed for all CPUs : 0.000355 kWh. Total CPU Power : 42.5 W
+[codecarbon INFO @ 17:32:31] 0.003749 kWh of electricity used since the beginning.
+[codecarbon INFO @ 17:32:46] Energy consumed for RAM : 0.001179 kWh. RAM Power : 94.35204792022705 W
+[codecarbon INFO @ 17:32:46] Energy consumed for all GPUs : 0.003920 kWh. Total GPU Power : 315.20246714165313 W
+[codecarbon INFO @ 17:32:46] Energy consumed for all CPUs : 0.000532 kWh. Total CPU Power : 42.5 W
+[codecarbon INFO @ 17:32:46] 0.005632 kWh of electricity used since the beginning.
+[codecarbon INFO @ 17:33:01] Energy consumed for RAM : 0.001572 kWh. RAM Power : 94.35204792022705 W
+[codecarbon INFO @ 17:33:01] Energy consumed for all GPUs : 0.005228 kWh. Total GPU Power : 314.3982249791535 W
+[codecarbon INFO @ 17:33:01] Energy consumed for all CPUs : 0.000709 kWh. Total CPU Power : 42.5 W
+[codecarbon INFO @ 17:33:01] 0.007508 kWh of electricity used since the beginning.
+[codecarbon INFO @ 17:33:16] Energy consumed for RAM : 0.001964 kWh. RAM Power : 94.35204792022705 W
+[codecarbon INFO @ 17:33:16] Energy consumed for all GPUs : 0.006538 kWh. Total GPU Power : 314.8128001016868 W
+[codecarbon INFO @ 17:33:16] Energy consumed for all CPUs : 0.000886 kWh. Total CPU Power : 42.5 W
+[codecarbon INFO @ 17:33:16] 0.009388 kWh of electricity used since the beginning.
+Evaluating model...
+Loss: 0.024786026042699815
+Accuracy: 61.400001525878906
+Reached in 82 seconds
+Making one-shot AL process...
+Selecting 10000 new samples...
+Updating AL technique...
+Elapsed time: 0 seconds
+Training model...
+[codecarbon INFO @ 17:33:31] Energy consumed for RAM : 0.002356 kWh. RAM Power : 94.35204792022705 W
+[codecarbon INFO @ 17:33:31] Energy consumed for all GPUs : 0.007857 kWh. Total GPU Power : 317.53982734473357 W
+[codecarbon INFO @ 17:33:31] Energy consumed for all CPUs : 0.001063 kWh. Total CPU Power : 42.5 W
+[codecarbon INFO @ 17:33:31] 0.011276 kWh of electricity used since the beginning.
+[codecarbon INFO @ 17:33:46] Energy consumed for RAM : 0.002748 kWh. RAM Power : 94.35204792022705 W
+[codecarbon INFO @ 17:33:46] Energy consumed for all GPUs : 0.009152 kWh. Total GPU Power : 312.0408879044961 W
+[codecarbon INFO @ 17:33:46] Energy consumed for all CPUs : 0.001241 kWh. Total CPU Power : 42.5 W
+[codecarbon INFO @ 17:33:46] 0.013141 kWh of electricity used since the beginning.
+[codecarbon INFO @ 17:34:01] Energy consumed for RAM : 0.003140 kWh. RAM Power : 94.35204792022705 W
+[codecarbon INFO @ 17:34:01] Energy consumed for all GPUs : 0.010459 kWh. Total GPU Power : 314.7326832148148 W
+[codecarbon INFO @ 17:34:01] Energy consumed for all CPUs : 0.001417 kWh. Total CPU Power : 42.5 W
+[codecarbon INFO @ 17:34:01] 0.015015 kWh of electricity used since the beginning.
+[codecarbon INFO @ 17:34:16] Energy consumed for RAM : 0.003532 kWh. RAM Power : 94.35204792022705 W
+[codecarbon INFO @ 17:34:16] Energy consumed for all GPUs : 0.011765 kWh. Total GPU Power : 314.17724268288526 W
+[codecarbon INFO @ 17:34:16] Energy consumed for all CPUs : 0.001594 kWh. Total CPU Power : 42.5 W
+[codecarbon INFO @ 17:34:16] 0.016891 kWh of electricity used since the beginning.
+[codecarbon INFO @ 17:34:31] Energy consumed for RAM : 0.003925 kWh. RAM Power : 94.35204792022705 W
+[codecarbon INFO @ 17:34:31] Energy consumed for all GPUs : 0.013074 kWh. Total GPU Power : 314.49288198199264 W
+[codecarbon INFO @ 17:34:31] Energy consumed for all CPUs : 0.001772 kWh. Total CPU Power : 42.5 W
+[codecarbon INFO @ 17:34:31] 0.018770 kWh of electricity used since the beginning.
+Evaluating model...
+[codecarbon INFO @ 17:34:46] Energy consumed for RAM : 0.004317 kWh. RAM Power : 94.35204792022705 W
+[codecarbon INFO @ 17:34:46] Energy consumed for all GPUs : 0.014385 kWh. Total GPU Power : 315.44727196941705 W
+[codecarbon INFO @ 17:34:46] Energy consumed for all CPUs : 0.001948 kWh. Total CPU Power : 42.5 W
+[codecarbon INFO @ 17:34:46] 0.020650 kWh of electricity used since the beginning.
+Loss: 0.030170535731315614
+Accuracy: 58.040000915527344
+Reached in 76 seconds
+[codecarbon INFO @ 17:35:01] Energy consumed for RAM : 0.004710 kWh. RAM Power : 94.35204792022705 W
+[codecarbon INFO @ 17:35:01] Energy consumed for all GPUs : 0.015696 kWh. Total GPU Power : 314.82235167690067 W
+[codecarbon INFO @ 17:35:01] Energy consumed for all CPUs : 0.002126 kWh. Total CPU Power : 42.5 W
+[codecarbon INFO @ 17:35:01] 0.022531 kWh of electricity used since the beginning.
+[codecarbon INFO @ 17:35:16] Energy consumed for RAM : 0.005102 kWh. RAM Power : 94.35204792022705 W
+[codecarbon INFO @ 17:35:16] Energy consumed for all GPUs : 0.017010 kWh. Total GPU Power : 316.0342300497554 W
+[codecarbon INFO @ 17:35:16] Energy consumed for all CPUs : 0.002303 kWh. Total CPU Power : 42.5 W
+[codecarbon INFO @ 17:35:16] 0.024415 kWh of electricity used since the beginning.
+[codecarbon INFO @ 17:35:31] Energy consumed for RAM : 0.005494 kWh. RAM Power : 94.35204792022705 W
+[codecarbon INFO @ 17:35:31] Energy consumed for all GPUs : 0.018286 kWh. Total GPU Power : 306.99826388416824 W
+[codecarbon INFO @ 17:35:31] Energy consumed for all CPUs : 0.002480 kWh. Total CPU Power : 42.5 W
+[codecarbon INFO @ 17:35:31] 0.026260 kWh of electricity used since the beginning.
+[codecarbon INFO @ 17:35:46] Energy consumed for RAM : 0.005886 kWh. RAM Power : 94.35204792022705 W
+[codecarbon INFO @ 17:35:46] Energy consumed for all GPUs : 0.019607 kWh. Total GPU Power : 317.80871099581043 W
+[codecarbon INFO @ 17:35:46] Energy consumed for all CPUs : 0.002657 kWh. Total CPU Power : 42.5 W
+[codecarbon INFO @ 17:35:46] 0.028150 kWh of electricity used since the beginning.
+[codecarbon INFO @ 17:36:01] Energy consumed for RAM : 0.006278 kWh. RAM Power : 94.35204792022705 W
+[codecarbon INFO @ 17:36:01] Energy consumed for all GPUs : 0.020904 kWh. Total GPU Power : 312.49445751374674 W
+[codecarbon INFO @ 17:36:01] Energy consumed for all CPUs : 0.002834 kWh. Total CPU Power : 42.5 W
+[codecarbon INFO @ 17:36:01] 0.030016 kWh of electricity used since the beginning.
+Evaluating model...
+Loss: 0.025248241263628006
+Accuracy: 66.00999450683594
+Reached in 80 seconds
+[codecarbon INFO @ 17:36:16] Energy consumed for RAM : 0.006670 kWh. RAM Power : 94.35204792022705 W
+[codecarbon INFO @ 17:36:16] Energy consumed for all GPUs : 0.022193 kWh. Total GPU Power : 309.7927096845761 W
+[codecarbon INFO @ 17:36:16] Energy consumed for all CPUs : 0.003011 kWh. Total CPU Power : 42.5 W
+[codecarbon INFO @ 17:36:16] 0.031874 kWh of electricity used since the beginning.
+[codecarbon INFO @ 17:36:31] Energy consumed for RAM : 0.007063 kWh. RAM Power : 94.35204792022705 W
+[codecarbon INFO @ 17:36:31] Energy consumed for all GPUs : 0.023516 kWh. Total GPU Power : 318.11184695826495 W
+[codecarbon INFO @ 17:36:31] Energy consumed for all CPUs : 0.003188 kWh. Total CPU Power : 42.5 W
+[codecarbon INFO @ 17:36:31] 0.033767 kWh of electricity used since the beginning.
+[codecarbon INFO @ 17:36:46] Energy consumed for RAM : 0.007455 kWh. RAM Power : 94.35204792022705 W
+[codecarbon INFO @ 17:36:46] Energy consumed for all GPUs : 0.024826 kWh. Total GPU Power : 314.8082033509 W
+[codecarbon INFO @ 17:36:46] Energy consumed for all CPUs : 0.003365 kWh. Total CPU Power : 42.5 W
+[codecarbon INFO @ 17:36:46] 0.035646 kWh of electricity used since the beginning.
+[codecarbon INFO @ 17:37:01] Energy consumed for RAM : 0.007848 kWh. RAM Power : 94.35204792022705 W
+[codecarbon INFO @ 17:37:01] Energy consumed for all GPUs : 0.026135 kWh. Total GPU Power : 314.6463528688361 W
+[codecarbon INFO @ 17:37:01] Energy consumed for all CPUs : 0.003542 kWh. Total CPU Power : 42.5 W
+[codecarbon INFO @ 17:37:01] 0.037525 kWh of electricity used since the beginning.
+[codecarbon INFO @ 17:37:16] Energy consumed for RAM : 0.008240 kWh. RAM Power : 94.35204792022705 W
+[codecarbon INFO @ 17:37:16] Energy consumed for all GPUs : 0.027429 kWh. Total GPU Power : 310.89283959836604 W
+[codecarbon INFO @ 17:37:16] Energy consumed for all CPUs : 0.003720 kWh. Total CPU Power : 42.5 W
+[codecarbon INFO @ 17:37:16] 0.039389 kWh of electricity used since the beginning.
+[codecarbon INFO @ 17:37:31] Energy consumed for RAM : 0.008633 kWh. RAM Power : 94.35204792022705 W
+[codecarbon INFO @ 17:37:31] Energy consumed for all GPUs : 0.028744 kWh. Total GPU Power : 316.38053953744696 W
+[codecarbon INFO @ 17:37:31] Energy consumed for all CPUs : 0.003897 kWh. Total CPU Power : 42.5 W
+[codecarbon INFO @ 17:37:31] 0.041273 kWh of electricity used since the beginning.
+Evaluating model...
+Loss: 0.02643849441409111
+Accuracy: 65.33000183105469
+Reached in 76 seconds
+[codecarbon INFO @ 17:37:46] Energy consumed for RAM : 0.009025 kWh. RAM Power : 94.35204792022705 W
+[codecarbon INFO @ 17:37:46] Energy consumed for all GPUs : 0.030071 kWh. Total GPU Power : 319.0551738073175 W
+[codecarbon INFO @ 17:37:46] Energy consumed for all CPUs : 0.004074 kWh. Total CPU Power : 42.5 W
+[codecarbon INFO @ 17:37:46] 0.043170 kWh of electricity used since the beginning.
+[codecarbon INFO @ 17:38:01] Energy consumed for RAM : 0.009418 kWh. RAM Power : 94.35204792022705 W
+[codecarbon INFO @ 17:38:01] Energy consumed for all GPUs : 0.031355 kWh. Total GPU Power : 308.36999200180736 W
+[codecarbon INFO @ 17:38:01] Energy consumed for all CPUs : 0.004251 kWh. Total CPU Power : 42.5 W
+[codecarbon INFO @ 17:38:01] 0.045023 kWh of electricity used since the beginning.
+[codecarbon INFO @ 17:38:16] Energy consumed for RAM : 0.009810 kWh. RAM Power : 94.35204792022705 W
+[codecarbon INFO @ 17:38:16] Energy consumed for all GPUs : 0.032630 kWh. Total GPU Power : 306.81880171419976 W
+[codecarbon INFO @ 17:38:16] Energy consumed for all CPUs : 0.004428 kWh. Total CPU Power : 42.5 W
+[codecarbon INFO @ 17:38:16] 0.046868 kWh of electricity used since the beginning.
+[codecarbon INFO @ 17:38:31] Energy consumed for RAM : 0.010203 kWh. RAM Power : 94.35204792022705 W
+[codecarbon INFO @ 17:38:31] Energy consumed for all GPUs : 0.033899 kWh. Total GPU Power : 304.83835226625456 W
+[codecarbon INFO @ 17:38:31] Energy consumed for all CPUs : 0.004605 kWh. Total CPU Power : 42.5 W
+[codecarbon INFO @ 17:38:31] 0.048707 kWh of electricity used since the beginning.
+[codecarbon INFO @ 17:38:46] Energy consumed for RAM : 0.010595 kWh. RAM Power : 94.35204792022705 W
+[codecarbon INFO @ 17:38:46] Energy consumed for all GPUs : 0.035232 kWh. Total GPU Power : 320.1712090227652 W
+[codecarbon INFO @ 17:38:46] Energy consumed for all CPUs : 0.004782 kWh. Total CPU Power : 42.5 W
+[codecarbon INFO @ 17:38:46] 0.050610 kWh of electricity used since the beginning.
+Evaluating model...
+Loss: 0.026122321903705597
+Accuracy: 66.18000030517578
+Reached in 77 seconds
+[codecarbon INFO @ 17:39:01] Energy consumed for RAM : 0.010988 kWh. RAM Power : 94.35204792022705 W
+[codecarbon INFO @ 17:39:01] Energy consumed for all GPUs : 0.036559 kWh. Total GPU Power : 319.04882368454065 W
+[codecarbon INFO @ 17:39:01] Energy consumed for all CPUs : 0.004959 kWh. Total CPU Power : 42.5 W
+[codecarbon INFO @ 17:39:01] 0.052506 kWh of electricity used since the beginning.
+[codecarbon INFO @ 17:39:16] Energy consumed for RAM : 0.011380 kWh. RAM Power : 94.35204792022705 W
+[codecarbon INFO @ 17:39:16] Energy consumed for all GPUs : 0.037865 kWh. Total GPU Power : 313.8435796207809 W
+[codecarbon INFO @ 17:39:16] Energy consumed for all CPUs : 0.005136 kWh. Total CPU Power : 42.5 W
+[codecarbon INFO @ 17:39:16] 0.054382 kWh of electricity used since the beginning.
+[codecarbon INFO @ 17:39:31] Energy consumed for RAM : 0.011773 kWh. RAM Power : 94.35204792022705 W
+[codecarbon INFO @ 17:39:31] Energy consumed for all GPUs : 0.039172 kWh. Total GPU Power : 314.0137128831964 W
+[codecarbon INFO @ 17:39:31] Energy consumed for all CPUs : 0.005314 kWh. Total CPU Power : 42.5 W
+[codecarbon INFO @ 17:39:31] 0.056259 kWh of electricity used since the beginning.
+[codecarbon INFO @ 17:39:46] Energy consumed for RAM : 0.012165 kWh. RAM Power : 94.35204792022705 W
+[codecarbon INFO @ 17:39:46] Energy consumed for all GPUs : 0.040475 kWh. Total GPU Power : 313.8423276036439 W
+[codecarbon INFO @ 17:39:46] Energy consumed for all CPUs : 0.005491 kWh. Total CPU Power : 42.5 W
+[codecarbon INFO @ 17:39:46] 0.058130 kWh of electricity used since the beginning.
+[codecarbon INFO @ 17:40:01] Energy consumed for RAM : 0.012558 kWh. RAM Power : 94.35204792022705 W
+[codecarbon INFO @ 17:40:01] Energy consumed for all GPUs : 0.041793 kWh. Total GPU Power : 316.509519085134 W
+[codecarbon INFO @ 17:40:01] Energy consumed for all CPUs : 0.005668 kWh. Total CPU Power : 42.5 W
+[codecarbon INFO @ 17:40:01] 0.060018 kWh of electricity used since the beginning.
+Evaluating model...
+[codecarbon INFO @ 17:40:16] Energy consumed for RAM : 0.012950 kWh. RAM Power : 94.35204792022705 W
+[codecarbon INFO @ 17:40:16] Energy consumed for all GPUs : 0.043084 kWh. Total GPU Power : 310.4541185850221 W
+[codecarbon INFO @ 17:40:16] Energy consumed for all CPUs : 0.005845 kWh. Total CPU Power : 42.5 W
+[codecarbon INFO @ 17:40:16] 0.061879 kWh of electricity used since the beginning.
+Loss: 0.023135453712940218
+Accuracy: 68.91999816894531
+Reached in 74 seconds
+[codecarbon INFO @ 17:40:31] Energy consumed for RAM : 0.013343 kWh. RAM Power : 94.35204792022705 W
+[codecarbon INFO @ 17:40:31] Energy consumed for all GPUs : 0.044399 kWh. Total GPU Power : 315.9949747536109 W
+[codecarbon INFO @ 17:40:31] Energy consumed for all CPUs : 0.006022 kWh. Total CPU Power : 42.5 W
+[codecarbon INFO @ 17:40:31] 0.063764 kWh of electricity used since the beginning.
+[codecarbon INFO @ 17:40:46] Energy consumed for RAM : 0.013735 kWh. RAM Power : 94.35204792022705 W
+[codecarbon INFO @ 17:40:46] Energy consumed for all GPUs : 0.045696 kWh. Total GPU Power : 311.992775447092 W
+[codecarbon INFO @ 17:40:46] Energy consumed for all CPUs : 0.006199 kWh. Total CPU Power : 42.5 W
+[codecarbon INFO @ 17:40:46] 0.065630 kWh of electricity used since the beginning.
+[codecarbon INFO @ 17:41:01] Energy consumed for RAM : 0.014127 kWh. RAM Power : 94.35204792022705 W
+[codecarbon INFO @ 17:41:01] Energy consumed for all GPUs : 0.046993 kWh. Total GPU Power : 311.8957336548021 W
+[codecarbon INFO @ 17:41:01] Energy consumed for all CPUs : 0.006376 kWh. Total CPU Power : 42.5 W
+[codecarbon INFO @ 17:41:01] 0.067496 kWh of electricity used since the beginning.
+[codecarbon INFO @ 17:41:16] Energy consumed for RAM : 0.014520 kWh. RAM Power : 94.35204792022705 W
+[codecarbon INFO @ 17:41:16] Energy consumed for all GPUs : 0.048312 kWh. Total GPU Power : 317.08938349522134 W
+[codecarbon INFO @ 17:41:16] Energy consumed for all CPUs : 0.006553 kWh. Total CPU Power : 42.5 W
+[codecarbon INFO @ 17:41:16] 0.069385 kWh of electricity used since the beginning.
+[codecarbon INFO @ 17:41:31] Energy consumed for RAM : 0.014912 kWh. RAM Power : 94.35204792022705 W
+Evaluating model...
+[codecarbon INFO @ 17:41:31] Energy consumed for all GPUs : 0.049629 kWh. Total GPU Power : 316.5365074653257 W
+[codecarbon INFO @ 17:41:31] Energy consumed for all CPUs : 0.006731 kWh. Total CPU Power : 42.5 W
+[codecarbon INFO @ 17:41:31] 0.071273 kWh of electricity used since the beginning.
+Loss: 0.023085164791345595
+Accuracy: 69.18000030517578
+Reached in 73 seconds
+[codecarbon INFO @ 17:41:46] Energy consumed for RAM : 0.015304 kWh. RAM Power : 94.35204792022705 W
+[codecarbon INFO @ 17:41:46] Energy consumed for all GPUs : 0.050941 kWh. Total GPU Power : 315.92975057833064 W
+[codecarbon INFO @ 17:41:46] Energy consumed for all CPUs : 0.006907 kWh. Total CPU Power : 42.5 W
+[codecarbon INFO @ 17:41:46] 0.073153 kWh of electricity used since the beginning.
+[codecarbon INFO @ 17:42:01] Energy consumed for RAM : 0.015697 kWh. RAM Power : 94.35204792022705 W
+[codecarbon INFO @ 17:42:01] Energy consumed for all GPUs : 0.052231 kWh. Total GPU Power : 309.8712932207065 W
+[codecarbon INFO @ 17:42:01] Energy consumed for all CPUs : 0.007085 kWh. Total CPU Power : 42.5 W
+[codecarbon INFO @ 17:42:01] 0.075012 kWh of electricity used since the beginning.
+[codecarbon INFO @ 17:42:16] Energy consumed for RAM : 0.016089 kWh. RAM Power : 94.35204792022705 W
+[codecarbon INFO @ 17:42:16] Energy consumed for all GPUs : 0.053532 kWh. Total GPU Power : 313.2081180193194 W
+[codecarbon INFO @ 17:42:16] Energy consumed for all CPUs : 0.007262 kWh. Total CPU Power : 42.5 W
+[codecarbon INFO @ 17:42:16] 0.076882 kWh of electricity used since the beginning.
+[codecarbon INFO @ 17:42:31] Energy consumed for RAM : 0.016481 kWh. RAM Power : 94.35204792022705 W
+[codecarbon INFO @ 17:42:31] Energy consumed for all GPUs : 0.054822 kWh. Total GPU Power : 310.6418927194462 W
+[codecarbon INFO @ 17:42:31] Energy consumed for all CPUs : 0.007439 kWh. Total CPU Power : 42.5 W
+[codecarbon INFO @ 17:42:31] 0.078741 kWh of electricity used since the beginning.
+[codecarbon INFO @ 17:42:46] Energy consumed for RAM : 0.016873 kWh. RAM Power : 94.35204792022705 W
+[codecarbon INFO @ 17:42:46] Energy consumed for all GPUs : 0.056131 kWh. Total GPU Power : 314.5056135171558 W
+[codecarbon INFO @ 17:42:46] Energy consumed for all CPUs : 0.007616 kWh. Total CPU Power : 42.5 W
+[codecarbon INFO @ 17:42:46] 0.080620 kWh of electricity used since the beginning.
+Evaluating model...
+Loss: 0.023215255802869796
+Accuracy: 69.0199966430664
+Reached in 76 seconds
+[codecarbon INFO @ 17:43:01] Energy consumed for RAM : 0.017265 kWh. RAM Power : 94.35204792022705 W
+[codecarbon INFO @ 17:43:01] Energy consumed for all GPUs : 0.057456 kWh. Total GPU Power : 318.84628708852733 W
+[codecarbon INFO @ 17:43:01] Energy consumed for all CPUs : 0.007793 kWh. Total CPU Power : 42.5 W
+[codecarbon INFO @ 17:43:01] 0.082515 kWh of electricity used since the beginning.
+[codecarbon INFO @ 17:43:16] Energy consumed for RAM : 0.017658 kWh. RAM Power : 94.35204792022705 W
+[codecarbon INFO @ 17:43:16] Energy consumed for all GPUs : 0.058750 kWh. Total GPU Power : 310.7556819062797 W
+[codecarbon INFO @ 17:43:16] Energy consumed for all CPUs : 0.007970 kWh. Total CPU Power : 42.5 W
+[codecarbon INFO @ 17:43:16] 0.084377 kWh of electricity used since the beginning.
+[codecarbon INFO @ 17:43:31] Energy consumed for RAM : 0.018051 kWh. RAM Power : 94.35204792022705 W
+[codecarbon INFO @ 17:43:31] Energy consumed for all GPUs : 0.060072 kWh. Total GPU Power : 317.74849258337406 W
+[codecarbon INFO @ 17:43:31] Energy consumed for all CPUs : 0.008147 kWh. Total CPU Power : 42.5 W
+[codecarbon INFO @ 17:43:31] 0.086270 kWh of electricity used since the beginning.
+[codecarbon INFO @ 17:43:46] Energy consumed for RAM : 0.018443 kWh. RAM Power : 94.35204792022705 W
+[codecarbon INFO @ 17:43:46] Energy consumed for all GPUs : 0.061397 kWh. Total GPU Power : 318.4175390079941 W
+[codecarbon INFO @ 17:43:46] Energy consumed for all CPUs : 0.008325 kWh. Total CPU Power : 42.5 W
+[codecarbon INFO @ 17:43:46] 0.088166 kWh of electricity used since the beginning.
+[codecarbon INFO @ 17:44:01] Energy consumed for RAM : 0.018835 kWh. RAM Power : 94.35204792022705 W
+[codecarbon INFO @ 17:44:01] Energy consumed for all GPUs : 0.062680 kWh. Total GPU Power : 309.0943835969458 W
+[codecarbon INFO @ 17:44:01] Energy consumed for all CPUs : 0.008501 kWh. Total CPU Power : 42.5 W
+[codecarbon INFO @ 17:44:01] 0.090016 kWh of electricity used since the beginning.
+Evaluating model...
+[codecarbon INFO @ 17:44:16] Energy consumed for RAM : 0.019227 kWh. RAM Power : 94.35204792022705 W
+[codecarbon INFO @ 17:44:16] Energy consumed for all GPUs : 0.063967 kWh. Total GPU Power : 309.60607361361275 W
+[codecarbon INFO @ 17:44:16] Energy consumed for all CPUs : 0.008678 kWh. Total CPU Power : 42.5 W
+[codecarbon INFO @ 17:44:16] 0.091872 kWh of electricity used since the beginning.
+Loss: 0.023586307275295256
+Accuracy: 69.55000305175781
+Reached in 77 seconds
+[codecarbon INFO @ 17:44:31] Energy consumed for RAM : 0.019620 kWh. RAM Power : 94.35204792022705 W
+[codecarbon INFO @ 17:44:31] Energy consumed for all GPUs : 0.065311 kWh. Total GPU Power : 322.97938153778114 W
+[codecarbon INFO @ 17:44:31] Energy consumed for all CPUs : 0.008855 kWh. Total CPU Power : 42.5 W
+[codecarbon INFO @ 17:44:31] 0.093786 kWh of electricity used since the beginning.
+[codecarbon INFO @ 17:44:46] Energy consumed for RAM : 0.020012 kWh. RAM Power : 94.35204792022705 W
+[codecarbon INFO @ 17:44:46] Energy consumed for all GPUs : 0.066616 kWh. Total GPU Power : 313.5101977669041 W
+[codecarbon INFO @ 17:44:46] Energy consumed for all CPUs : 0.009033 kWh. Total CPU Power : 42.5 W
+[codecarbon INFO @ 17:44:46] 0.095661 kWh of electricity used since the beginning.
+[codecarbon INFO @ 17:45:01] Energy consumed for RAM : 0.020404 kWh. RAM Power : 94.35204792022705 W
+[codecarbon INFO @ 17:45:01] Energy consumed for all GPUs : 0.067930 kWh. Total GPU Power : 316.1917759943225 W
+[codecarbon INFO @ 17:45:01] Energy consumed for all CPUs : 0.009210 kWh. Total CPU Power : 42.5 W
+[codecarbon INFO @ 17:45:01] 0.097544 kWh of electricity used since the beginning.
+[codecarbon INFO @ 17:45:16] Energy consumed for RAM : 0.020797 kWh. RAM Power : 94.35204792022705 W
+[codecarbon INFO @ 17:45:16] Energy consumed for all GPUs : 0.069212 kWh. Total GPU Power : 307.99089319023165 W
+[codecarbon INFO @ 17:45:16] Energy consumed for all CPUs : 0.009387 kWh. Total CPU Power : 42.5 W
+[codecarbon INFO @ 17:45:16] 0.099396 kWh of electricity used since the beginning.
+[codecarbon INFO @ 17:45:31] Energy consumed for RAM : 0.021190 kWh. RAM Power : 94.35204792022705 W
+[codecarbon INFO @ 17:45:31] Energy consumed for all GPUs : 0.070495 kWh. Total GPU Power : 308.2212651569855 W
+[codecarbon INFO @ 17:45:31] Energy consumed for all CPUs : 0.009564 kWh. Total CPU Power : 42.5 W
+[codecarbon INFO @ 17:45:31] 0.101249 kWh of electricity used since the beginning.
+Evaluating model...
+Loss: 0.02205516231060028
+Accuracy: 70.68000030517578
+Reached in 74 seconds
+Evaluating model...
+Loss: 0.02205516231060028
+Accuracy: 70.68000030517578
+Reached in 817 seconds
+Samples used: 30000
+CPU usage: 107.58305687203742
+Memory usage: 1982.2366567313388
+Elapsed time: 844 seconds
+Epochs elapsed: 100
+[codecarbon INFO @ 17:45:43] Energy consumed for RAM : 0.021506 kWh. RAM Power : 94.35204792022705 W
+[codecarbon INFO @ 17:45:43] Energy consumed for all GPUs : 0.071553 kWh. Total GPU Power : 315.6490521112105 W
+[codecarbon INFO @ 17:45:43] Energy consumed for all CPUs : 0.009706 kWh. Total CPU Power : 42.5 W
+[codecarbon INFO @ 17:45:43] 0.102765 kWh of electricity used since the beginning.

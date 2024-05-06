@@ -5,7 +5,8 @@ from torchvision import datasets, transforms
 
 class Cifar100ALDataset(AbstractALDataset):
 
-    def __init__(self, quantity_samples):
+    def __init__(self, quantity_samples, rs2_enabled):
+        self.input_shape = (3, 32, 32)
         test_dataset = datasets.CIFAR100(root=support.dataset_path.format("cifar100"), train=False, transform=transforms.ToTensor(), download=True)
         train_dataset = datasets.CIFAR100(root=support.dataset_path.format("cifar100"), train=True, transform=transforms.ToTensor(), download=True)
-        super(Cifar100ALDataset, self).__init__(quantity_samples, test_dataset, train_dataset, (3, 32, 32))
+        super(Cifar100ALDataset, self).__init__(quantity_samples, test_dataset, train_dataset, self.input_shape, rs2_enabled)

@@ -34,7 +34,7 @@ class MNIST_nn(nn.Module):
         x = self.fc2(x)
         return x, F.log_softmax(x)
 
-    def _train_epoch(self, optimizer, train_loader):
+    def _train_epoch(self, optimizer, train_loader, scheduler):
         self.train()
         for _, (data, target, _) in enumerate(train_loader):
             optimizer.zero_grad()
@@ -42,6 +42,8 @@ class MNIST_nn(nn.Module):
             loss = F.nll_loss(output.to(self.device), target.to(self.device))
             loss.backward()
             optimizer.step()
+            if scheduler is not None:
+                scheduler.step()
 
     def evaluate(self, criterion, test_loader):
         self.eval()
@@ -57,9 +59,9 @@ class MNIST_nn(nn.Module):
         test_loss /= len(test_loader.dataset)
         return test_loss, (correct / len(test_loader.dataset) * 100)
 
-    def fit(self, epochs, criterion, optimizer, train_loader):
+    def fit(self, epochs, criterion, optimizer, train_loader, scheduler):
         for epoch in range(epochs):
-            self._train_epoch(optimizer, train_loader)
+            self._train_epoch(optimizer, train_loader, scheduler)
 
     def save(self, path):
         torch.save(self.state_dict(), path)

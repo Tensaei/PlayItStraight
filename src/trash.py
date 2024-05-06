@@ -202,3 +202,112 @@ finally:
      res = tracker.stop()
      print("+"*100)
      print(res)
+
+
+
+
+
+
+import numpy
+import torch
+import src.support as support
+
+from src.active_learning_technique.abstract_al_technique import AbstractALTechnique
+from torch import nn
+
+from src.al_dataset.dataset import Dataset
+
+
+class EGLALTechnique(AbstractALTechnique):
+
+    def __init__(self, neural_network):
+        self.neural_network = neural_network
+
+    def select_samples(self, x, y, n_samples_to_select):
+        criterion = torch.nn.CrossEntropyLoss()   #TODO
+        funSoft = nn.Softmax(dim=1)   #
+
+        sub_train_loader = torch.utils.data.DataLoader(Dataset((1, 28, 28), x, y), batch_size=support.model_batch_size)
+        scores = []
+        self.neural_network.eval()
+        for x_batch, y_batch, _ in sub_train_loader:
+            x_batch, y_batch = x_batch.to(support.device), y_batch.to(support.device)
+            x_batch.requires_grad = True
+            output = self.neural_network(x_batch)
+            output_copy = funSoft(torch.Tensor.cpu(output)) #
+            grad_sum = numpy.zeros(len(x_batch)) #
+
+            for label_index in range(10):
+                y_likely = torch.zeros_like(y_batch) + label_index
+                loss = criterion(output, y_likely)
+                x_grad = torch.autograd.grad(loss, x_batch, retain_graph=True, create_graph=False)[0]
+                grad_sum += numpy.linalg.norm(torch.Tensor.cpu(x_grad).detach().numpy().squeeze().reshape(len(x_grad), -1), axis=1) * torch.Tensor.cpu(output_copy[:, label_index]).detach().numpy()
+            scores.extend(grad_sum)
+
+            # loss = criterion(output, y_batch)
+            # x_grad = torch.autograd.grad(loss, x_batch, retain_graph=True, create_graph=False)[0]
+            # grad_sum = numpy.linalg.norm(torch.Tensor.cpu(x_grad).detach().numpy().squeeze().reshape(len(x_grad), -1))
+            # scores.append(grad_sum)
+
+        self.neural_network.train()
+        scores_sort = numpy.argsort(scores)
+        scores_egl = [int(item) for item in scores_sort]
+        select_loc = scores_egl[-n_samples_to_select:]
+        selected_samples = [x[index] for index in select_loc]
+        return selected_samples, None, None, None
+
+
+
+    '''
+        sub_train_dataset = Subset(train_dataset, sub_idx)
+    sub_train_loader = torch.utils.data.DataLoader(
+        dataset=sub_train_dataset,
+        batch_size=batch_size,
+        shuffle=False)
+    scores = []
+    model.eval()
+    for x_batch, y_batch in sub_train_loader:
+        x_batch, y_batch = x_batch.to(device), y_batch.to(device)
+        x_batch.requires_grad = True
+        output = model(x_batch)
+        output_copy = funSoft(torch.Tensor.cpu(output))
+        grad_sum = np.zeros(len(x_batch))
+        for label_index in range(class_num):
+            y_likely = torch.zeros_like(y_batch) + label_index
+            loss = criterion(output, y_likely)
+            x_grad = torch.autograd.grad(loss, x_batch, retain_graph=True, create_graph=False)[0]
+            grad_sum += np.linalg.norm(torch.Tensor.cpu(x_grad).detach().numpy().squeeze().reshape(len(x_grad), -1), axis=1) * torch.Tensor.cpu(output_copy[:, label_index]).detach().numpy()
+        scores.extend(grad_sum)
+    scores_sort = np.argsort(scores)
+    scores_egl = [int(item) for item in scores_sort]
+    select_loc = scores_egl[-num:]
+    return np.array(sub_idx)[np.array(select_loc)]
+    '''
+
+
+def sort_by_float(current_tuple):
+    return current_tuple[0]
+
+# combined_list = list(zip(scores, selected_x))
+# combined_list = sorted(combined_list, key=sort_by_float, reverse=True)
+# _, selected_x = zip(*combined_list)
+# self.dataset.annotate(selected_x[:self.n_samples_to_select])
+
+
+
+
+
+    def _rs2_train_model(self, criterion, model, optimizer, target_epochs, step_training_epochs, scheduler):
+        clprint("Training model with rs2...", Reason.INFO_TRAINING)
+        #dataset_batches = self.dataset.get_dataset_in_batches_rs2(target_epochs/2)
+        dataset_batches = self.dataset.get_dataset_in_batches_rs2(target_epochs)
+        #for i in range(2):
+        for current_batch in dataset_batches:
+            start_time = support.get_time_in_millis()
+            model.fit(step_training_epochs, criterion, optimizer, current_batch, scheduler)
+            elapsed_time = support.get_time_in_millis() - start_time
+            #clprint("Evaluating model...", Reason.INFO_TRAINING)
+            #loss, accuracy = model.evaluate(criterion, self.dataset.get_test_loader())
+
+        loss, accuracy = model.evaluate(criterion, self.dataset.get_test_loader())
+        clprint("Loss: {}\nAccuracy: {}\nReached in {} seconds".format(loss, accuracy, int(elapsed_time / 1000)), Reason.LIGHT_INFO_TRAINING, loggable=True)

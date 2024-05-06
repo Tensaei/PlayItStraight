@@ -1,15 +1,20 @@
 import numpy
 import torch
 import random
-
 import src.support as support
+
+from enum import Enum
 from src.al_dataset.dataset import Dataset
 from torch.utils.data.dataloader import DataLoader
+
+class StartSelectionTechnique(Enum):
+    RANDOM = 1
+    GLISTER = 3
 
 
 class AbstractALDataset:
 
-    def __init__(self, quantity_samples, test_dataset, train_dataset, shape_data):
+    def __init__(self, quantity_samples, test_dataset, train_dataset, shape_data, rs2_enabled, start_selection_technique=StartSelectionTechnique.RANDOM):
         self.quantity_samples = quantity_samples
         self.shape_data = shape_data
         self.test_loader = torch.utils.data.DataLoader(dataset=test_dataset, batch_size=support.model_batch_size, shuffle=False)
@@ -52,6 +57,9 @@ class AbstractALDataset:
             i += 1
 
         self.quantity_classes = int(max(self.test_y) + 1)
+        if rs2_enabled:
+            self.x_dataset = x_dataset
+            self.y_dataset = y_dataset
 
     def __len__(self):
         return len(self.x_labeled)
@@ -113,6 +121,26 @@ class AbstractALDataset:
             train_x.extend(self.x_labeled_last_batch)
             train_y.extend(self.y_labeled_last_batch)
             return DataLoader(Dataset(self.shape_data, train_x, train_y), batch_size=support.model_batch_size)
+
+    def get_dataset_in_batches_rs2(self, n_batches):
+        result = []
+        size_batches = int(len(self.x_dataset)/n_batches)
+        current_size = 0
+        current_batch_x = []
+        current_batch_y = []
+        for i in range(len(self.x_dataset)):
+            current_batch_x.append(self.x_dataset[i])
+            current_batch_y.append(self.y_dataset[i])
+            current_size += 1
+            if current_size >= size_batches:
+                result.append(DataLoader(Dataset(self.shape_data, current_batch_x, current_batch_y), batch_size=support.model_batch_size))
+                current_size = 0
+                current_batch_x = []
+                current_batch_y = []
+                if len(result) == n_batches:
+                    break
+
+        return result
 
     def get_test_loader(self):
         return self.test_loader

@@ -40,8 +40,8 @@ class BadgeALTechnique(AbstractALTechnique):
             for x, y, index in loader_te:
                 x = x.to(support.device).type(torch.float32).reshape(self.dataset.shape_data).unsqueeze(0)
                 c_out, out = self.neural_network.detailed_forward(x)
-                out = out.data.cpu().numpy()
-                #out = numpy.eye(self.n_classes)[labels[index.item()]]
+                #out = out.data.cpu().numpy()
+                out = numpy.eye(self.n_classes)[labels[index.item()]]
                 batch_probs = functional.softmax(c_out, dim=1).data.cpu().numpy()
                 max_indexes = numpy.argmax(batch_probs, 1)
                 for j in range(len(y)):
