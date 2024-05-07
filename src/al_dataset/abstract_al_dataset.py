@@ -3,25 +3,18 @@ import torch
 import random
 import src.support as support
 
-from enum import Enum
 from src.al_dataset.dataset import Dataset
 from torch.utils.data.dataloader import DataLoader
-
-class StartSelectionTechnique(Enum):
-    RANDOM = 1
-    GLISTER = 3
 
 
 class AbstractALDataset:
 
-    def __init__(self, quantity_samples, test_dataset, train_dataset, shape_data, rs2_enabled, start_selection_technique=StartSelectionTechnique.RANDOM):
+    def __init__(self, quantity_samples, test_dataset, train_dataset, shape_data, rs2_enabled):
         self.quantity_samples = quantity_samples
         self.shape_data = shape_data
         self.test_loader = torch.utils.data.DataLoader(dataset=test_dataset, batch_size=support.model_batch_size, shuffle=False)
         self.x_labeled = []
         self.y_labeled = []
-        self.x_labeled_last_batch = None
-        self.y_labeled_last_batch = None
         self.unlabeled_dict = {}
         self.test_dict = {}
         x_dataset = []
@@ -86,41 +79,12 @@ class AbstractALDataset:
             return balanced_x, balanced_y
 
     def annotate(self, x_to_label):
-        # adding old batch to labeled set
-        if self.x_labeled_last_batch is not None:
-            for i in range(len(self.x_labeled_last_batch)):
-                self.x_labeled.append(self.x_labeled_last_batch[i])
-                self.y_labeled.append(self.y_labeled_last_batch[i])
-
-        # building new batch
-        self.x_labeled_last_batch = []
-        self.y_labeled_last_batch = []
         for value in x_to_label:
-            self.x_labeled_last_batch.append(value)
-            self.y_labeled_last_batch.append(self.unlabeled_dict.pop(value))
+            self.x_labeled.append(value)
+            self.y_labeled.append(self.unlabeled_dict.pop(value))
 
     def get_train_loader(self):
-        if self.x_labeled_last_batch is None:
-            return DataLoader(Dataset(self.shape_data, self.x_labeled, self.y_labeled), batch_size=support.model_batch_size)
-
-        else:
-            # building train loader
-            train_x = []
-            train_y = []
-            # taking the same quantity of last batch from the labeled data pool
-            map_training_dataset = list(zip(self.x_labeled, self.y_labeled))
-            random.shuffle(map_training_dataset)
-            x_dataset, y_dataset = zip(*map_training_dataset)
-            counters_for_class = [0] * self.quantity_classes
-            for i in range(len(x_dataset)):
-                if counters_for_class[y_dataset[i]] < int(len(self.x_labeled_last_batch)/self.quantity_classes):
-                    counters_for_class[y_dataset[i]] += 1
-                    train_x.append(x_dataset[i])
-                    train_y.append(y_dataset[i])
-
-            train_x.extend(self.x_labeled_last_batch)
-            train_y.extend(self.y_labeled_last_batch)
-            return DataLoader(Dataset(self.shape_data, train_x, train_y), batch_size=support.model_batch_size)
+        return DataLoader(Dataset(self.shape_data, self.x_labeled, self.y_labeled), batch_size=support.model_batch_size)
 
     def get_dataset_in_batches_rs2(self, n_batches):
         result = []

@@ -20,10 +20,10 @@ class SimpleActiveLearner:
         self.n_samples_to_select = -1
         self.selection_policy = selection_policy
 
-    def elaborate(self, model, target_epochs, step_training_epochs, n_samples_to_select, criterion, optimizer, scheduler, rs2_enabled):
+    def elaborate(self, model, target_epochs_phase_1, target_epochs_phase_2, step_training_epochs, n_samples_to_select, criterion, optimizer, scheduler, rs2_enabled):
         self.n_samples_to_select = n_samples_to_select
-        start_epochs = int(target_epochs / 10)
-        completion_epochs = int(start_epochs * 9)
+        start_epochs = target_epochs_phase_1
+        completion_epochs = target_epochs_phase_2
         clprint("Starting Training process...", Reason.INFO_TRAINING)
         if rs2_enabled:
             self._rs2_train_model(criterion, model, optimizer, start_epochs, step_training_epochs, scheduler)

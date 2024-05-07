@@ -311,3 +311,25 @@ def sort_by_float(current_tuple):
 
         loss, accuracy = model.evaluate(criterion, self.dataset.get_test_loader())
         clprint("Loss: {}\nAccuracy: {}\nReached in {} seconds".format(loss, accuracy, int(elapsed_time / 1000)), Reason.LIGHT_INFO_TRAINING, loggable=True)
+
+
+
+
+
+
+
+
+
+    def detailed_forward(self, x):
+        x = self.conv1(x)
+        x = self.bn1(x)
+        x = self.relu(x)
+        x = self.max_pool(x)
+        x = self.layer1(x)
+        x = self.layer2(x)
+        x = self.layer3(x)
+        x = self.layer4(x)
+        x = self.avg_pool(x)
+        x = torch.flatten(x, 1)
+        x = self.fc(x)
+        return x #, something

@@ -1,46 +1,39 @@
 import numpy
 import torch
-import heapq
 import src.support as support
 
+from torch import nn
 from src.active_learning_technique.abstract_al_technique import AbstractALTechnique
+from src.al_dataset.dataset import Dataset
 
 
 class LCSALTechnique(AbstractALTechnique):
 
-    def __init__(self, neural_network):
+    def __init__(self, neural_network, shape_data):
         self.neural_network = neural_network
+        self.shape_data = shape_data
 
     def select_samples(self, x, y, n_samples_to_select):
-        selected_samples = []
-        confidences = []
-        model_outputs = []
-        real_outputs = []
+        fun_soft = nn.Softmax(dim=1)
+        sub_train_loader = torch.utils.data.DataLoader(Dataset(self.shape_data, x, y), batch_size=support.model_batch_size)
+        scores = []
+        outputs = []
+        self.neural_network.eval()
+        with torch.no_grad():
+            for x_batch, _, _ in sub_train_loader:
+                x_batch = x_batch.to(support.device)
+                output = self.neural_network(x_batch)
+                output_copy = fun_soft(torch.Tensor.cpu(output)).detach().numpy()
+                lc_value = numpy.max(output_copy, axis=1)
+                scores = numpy.concatenate((scores, lc_value))
+                outputs.extend(output)
 
-        for i in range(len(x)):
-            # calculating least confidence
-            out_model = self.neural_network(torch.unsqueeze(x[i], 0).to(support.device))[0]
-            #out_model = self.neural_network(sample.to(support.device))[0]
-            simple_least_confidence = numpy.nanmax(out_model.cpu().detach().numpy())
-            normalized_least_confidence = (1 - simple_least_confidence) * (len(out_model) / (len(out_model) - 1)).detach().numpy()
-            # appending
-            if len(selected_samples) >= n_samples_to_select:
-                min_confidence = min(confidences)
-                min_confidence_index = confidences.index(min_confidence)
-                if normalized_least_confidence > min_confidence:
-                    selected_samples.pop(min_confidence_index)
-                    confidences.pop(min_confidence_index)
-                    model_outputs.pop(min_confidence_index)
-                    real_outputs.pop(min_confidence_index)
-                    selected_samples.append(x[i])
-                    confidences.append(normalized_least_confidence)
-                    model_outputs.append(out_model)
-                    real_outputs.append(y[i])
-
-            else:
-                selected_samples.append(x[i])
-                confidences.append(normalized_least_confidence)
-                model_outputs.append(out_model)
-                real_outputs.append(y[i])
-
-        return selected_samples, model_outputs, real_outputs, confidences
+        self.neural_network.train()
+        scores_sort = numpy.argsort(scores)
+        scores_lcs = [int(item) for item in scores_sort]
+        select_loc = scores_lcs[-n_samples_to_select * 2:]
+        selected_samples = [x[index] for index in select_loc]
+        real_y = [y[index] for index in select_loc]
+        model_y = [outputs[index] for index in select_loc]
+        selected_scores = [scores_lcs[index] for index in select_loc]
+        return selected_samples, model_y, real_y, selected_scores

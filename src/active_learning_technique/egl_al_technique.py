@@ -4,7 +4,6 @@ import src.support as support
 
 from src.active_learning_technique.abstract_al_technique import AbstractALTechnique
 from torch import nn
-
 from src.al_dataset.dataset import Dataset
 
 

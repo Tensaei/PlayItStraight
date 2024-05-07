@@ -22,7 +22,7 @@ class EntropyALTechnique(AbstractALTechnique):
         outputs = []
         self.neural_network.eval()
         with torch.no_grad():
-            for x_batch in sub_train_loader:
+            for x_batch, _, _ in sub_train_loader:
                 x_batch = x_batch.to(support.device)
                 output = self.neural_network(x_batch)
                 output_copy = fun_soft(torch.Tensor.cpu(output)).detach().numpy()
