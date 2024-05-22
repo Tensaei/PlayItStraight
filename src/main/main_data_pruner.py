@@ -82,9 +82,14 @@ def load_data_and_model(dataset_name, n_samples_to_select):
         dataset = Cifar10ALDataset(dataset_quantity, True)
         model = Cifar10_nn(support.device)
         criterion = torch.nn.CrossEntropyLoss()
-        optimizer = torch.optim.Adam(model.parameters(), lr=0.1, betas=(0.9, 0.995), weight_decay=5e-4)
-        scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, n_samples_to_select * 2 * 100, eta_min=1e-4)
-        scheduler.last_epoch = n_samples_to_select * 2 * 99
+        optimizer = optim.SGD(model.parameters(), lr=0.1, momentum=0.9, weight_decay=5e-4)
+        scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=100)
+        #optimizer = torch.optim.SGD(model.parameters(), lr=0.1, momentum=0.9, weight_decay=0.0005)
+        #optimizer = torch.optim.Adam(model.parameters(), lr=support.model_learning_rate, betas=(0.9, 0.995), weight_decay=5e-4)
+        #scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, n_samples_to_select * 2 * 100, eta_min=1e-4)
+        #scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, 50000 * 100 / support.model_batch_size,  eta_min=1e-4)
+        #scheduler.last_epoch = n_samples_to_select * 2 * 99
+        #scheduler = None
 
     elif dataset_name == "cifar100":
         clprint("Loading dataset...", Reason.INFO_TRAINING)
@@ -163,7 +168,6 @@ if __name__ == "__main__":
         clprint("Samples used: all", Reason.INFO_TRAINING, loggable=True)
         dataset, model, criterion, optimizer, scheduler = load_data_and_model(dataset_selected, -1)
         plain_training(model, (total_epochs), step_training_epochs, criterion, optimizer, dataset, scheduler)
-        clprint("CPU usage: {}\nMemory usage: {}\nElapsed time: {} seconds".format((sum_cpu_percent/counts), (sum_memory_usage/counts), int((support.get_time_in_millis() - start_time) / 1000)), Reason.OTHER, loggable=True)
         tracker.stop()
 
     else:

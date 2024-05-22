@@ -10,13 +10,6 @@ from enum import Enum
 warnings.filterwarnings("ignore")
 
 
-# training parameters
-vae_batch_size = 128
-vae_dim_code = 4
-vae_learning_rate = 1e-3
-vae_training_epochs = 50
-n_neighbors = 3
-
 model_batch_size = 64
 model_learning_rate = 3e-4  # 1e-3
 model_momentum = 0.5
@@ -28,7 +21,7 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 random_seed = 1
 
 # paths
-model_name = "mnist_vae"
+model_name = "cifar10"
 base_path = "/home/scala/projects/DataFiltering/"
 dataset_path = base_path + "dataset/{}/"
 results_path = base_path + "results"

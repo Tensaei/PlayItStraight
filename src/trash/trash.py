@@ -185,7 +185,7 @@ def plain_training(model, plain_training_epochs, incremental_training_epochs, cr
         clprint("Loss: {}\nAccuracy: {}\nReached in {} seconds".format(loss, accuracy, int(elapsed_time / 1000)), reason, loggable=True)
 
 '''
-
+'''
 import logging
 from codecarbon import EmissionsTracker
 logging.basicConfig(filename='codecarbon_log.txt', level=logging.INFO, format='%(message)s')
@@ -258,7 +258,7 @@ class EGLALTechnique(AbstractALTechnique):
 
 
 
-    '''
+
         sub_train_dataset = Subset(train_dataset, sub_idx)
     sub_train_loader = torch.utils.data.DataLoader(
         dataset=sub_train_dataset,
@@ -284,7 +284,7 @@ class EGLALTechnique(AbstractALTechnique):
     return np.array(sub_idx)[np.array(select_loc)]
     '''
 
-
+'''
 def sort_by_float(current_tuple):
     return current_tuple[0]
 
@@ -333,3 +333,89 @@ def sort_by_float(current_tuple):
         x = torch.flatten(x, 1)
         x = self.fc(x)
         return x #, something
+'''
+
+import random
+'''
+print("====================RS2 boot training====================")
+
+n_split = 3
+size = 118
+indices = list(range(size))
+size_batches = int(size / n_split)
+#random.shuffle(indices)
+print(indices)
+
+for i in range(n_split):
+    print(i*n_split)
+    print((i+1) * n_split)
+    split_set = indices[i*size_batches:(i+1)*size_batches]
+    print(split_set)
+    print(len(split_set))
+'''
+'''
+
+def random_distributed_selection(scores, n_query):
+    total_score = sum(scores)
+    normalized_scores = [val / total_score for val in scores]
+    thresholds = [sum(normalized_scores[:i + 1]) for i in range(len(normalized_scores))]
+    selected_indexes = []
+    for i in range(n_query):
+        hook = random.random()
+        for j in range(len(thresholds)):
+            if hook < thresholds[j]:
+                if j in selected_indexes:
+                    i -= 1
+
+                else:
+                    selected_indexes.append(j)
+                    break
+
+    return selected_indexes
+
+scores = [1, 3, 5, 7, 8, 9, 1, 3, 5, 7, 8, 9]
+n_query = 3
+selected_indexes = random_distributed_selection(scores, n_query)
+print(selected_indexes)
+
+'''
+
+'''
+
+def redistribute_numbers(numbers):
+    """Redistributes numbers between their maximum and negative maximum.
+
+    Args:
+        numbers: A list of numbers.
+
+    Returns:
+        A new list of numbers redistributed between their maximum and negative maximum.
+    """
+    max_num = max(numbers)
+
+    return [abs((num * 2)-max_num) for num in numbers]
+
+# Example usage
+numbers = [3, 1, 5, 2]
+redistributed_numbers = redistribute_numbers(numbers)
+print(redistributed_numbers)
+
+'''
+
+import torch
+import torch.nn.functional as F
+
+# Example batch size of 32, each distribution has 10 classes
+input = torch.randn(32, 10).log_softmax(dim=1)
+target = torch.randn(32, 10).softmax(dim=1)
+
+kl_losses = F.kl_div(input, target, reduction='none')
+kl_losses = F.kl_div(input, target, reduction='none')   # [32, 10]
+
+# Sum along class dimension (shape becomes [32])
+kl_losses_summed = kl_losses.sum(dim=1)
+
+# Average along class dimension (shape becomes [32])
+kl_losses_averaged = kl_losses.mean(dim=1)
+
+print(kl_losses)

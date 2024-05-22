@@ -84,7 +84,7 @@ class AbstractALDataset:
             self.y_labeled.append(self.unlabeled_dict.pop(value))
 
     def get_train_loader(self):
-        return DataLoader(Dataset(self.shape_data, self.x_labeled, self.y_labeled), batch_size=support.model_batch_size)
+        return DataLoader(Dataset(self.shape_data, self.x_labeled, self.y_labeled), shuffle=True, batch_size=support.model_batch_size)
 
     def get_dataset_in_batches_rs2(self, n_batches):
         result = []
@@ -97,7 +97,7 @@ class AbstractALDataset:
             current_batch_y.append(self.y_dataset[i])
             current_size += 1
             if current_size >= size_batches:
-                result.append(DataLoader(Dataset(self.shape_data, current_batch_x, current_batch_y), batch_size=support.model_batch_size))
+                result.append(DataLoader(Dataset(self.shape_data, current_batch_x, current_batch_y), batch_size=support.model_batch_size, shuffle=True))
                 current_size = 0
                 current_batch_x = []
                 current_batch_y = []

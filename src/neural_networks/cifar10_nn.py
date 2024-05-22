@@ -90,8 +90,9 @@ class Cifar10_nn(nn.Module):
             loss = criterion(output.to(self.device), target.to(self.device))
             loss.backward()
             optimizer.step()
-            if scheduler is not None:
-                scheduler.step()
+
+        if scheduler is not None:
+            scheduler.step()
 
     def evaluate(self, criterion, test_loader):
         self.eval()
