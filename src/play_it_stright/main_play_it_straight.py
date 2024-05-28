@@ -8,7 +8,7 @@ import torch.optim as optim
 
 from torch.utils.data import DataLoader
 from codecarbon import EmissionsTracker
-from src.play_it_stright.support.support import clprint
+from src.play_it_stright.support.support import clprint, Reason
 from src.play_it_stright.support.rs2 import split_dataset_for_rs2
 from src.play_it_stright.support.utils import *
 from src.play_it_stright.support.arguments import parser
@@ -104,7 +104,8 @@ if __name__ == "__main__":
     logs_precision = []
     logs_recall = []
     logs_f1 = []
-    for cycle in range(1, args.cycle):
+    cycle = 0
+    while accuracy < args.target_accuracy:
         print("====================Cycle: {}====================".format(cycle+1))
         print("==========Start Querying==========")
         selection_args = dict(selection_method=args.uncertainty, balance=args.balance, greedy=args.submodular_greedy, function=args.submodular)
@@ -138,8 +139,6 @@ if __name__ == "__main__":
         logs_precision.append([precision])
         logs_recall.append([recall])
         logs_f1.append([f1])
-        if cycle == args.cycle - 1:
-            break
 
     print("========== Final logs ==========")
     print("-"*100)
