@@ -6,7 +6,7 @@ import torch.nn as nn
 from argparse import ArgumentTypeError
 from prefetch_generator import BackgroundGenerator
 from sklearn.metrics import precision_score, recall_score, f1_score
-from src.support import clprint, Reason
+from src.play_it_stright.support.support import clprint, Reason
 
 
 class WeightedSubset(torch.utils.data.Subset):
