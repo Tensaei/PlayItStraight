@@ -21,8 +21,7 @@ class ImprovedUncertainty(ALMethod):
 
         self.selection_method = selection_method
         self.balance = balance
-
-        self.selection_policy = SelectionPolicy.L2 #FIXME
+        self.selection_policy = SelectionPolicy.L2
 
     def run(self):
         if self.balance:
