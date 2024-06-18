@@ -15,3 +15,13 @@ This repository contains the code and resources for the research paper "Play it 
 
 * **`play_it_straight/`:**
     * `main_play_it_straight.py`: Implements the proposed "Play It Straight" algorithm for model training.
+ 
+## Requirements
+
+* Python (3.10.6)
+* PyTorch (2.2.1)
+* Torchvision (0.17.1)
+* NumPy (1.26.4)
+* CodeCarbon (2.3.4)
+* Scikit-learn (1.4.1.post1)
+* ptflops (0.7.3)
