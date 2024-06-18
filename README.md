@@ -13,8 +13,15 @@ This repository contains the code and resources for the research paper "Play it 
 
 ## Repository Structure
 
-* **`train_whole_dataset/`:** Contains a Python script (`train_model.py`) for training a model using the entire dataset (baseline approach).
 * **`play_it_straight/`:**
-    * `main_al.py`: Trains a model using a pure active learning strategy;
-    * `main_rs2.py`: Trains a model using the repeated random sampling algorithm;
     * `main_play_it_straight.py`: Implements the proposed "Play It Straight" algorithm for model training.
+ 
+## Requirements
+
+* Python (3.10.6)
+* PyTorch (2.2.1)
+* Torchvision (0.17.1)
+* NumPy (1.26.4)
+* CodeCarbon (2.3.4)
+* Scikit-learn (1.4.1.post1)
+* ptflops (0.7.3)
