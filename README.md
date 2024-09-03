@@ -25,3 +25,7 @@ This repository contains the code and resources for the research paper "Play it 
 * CodeCarbon (2.3.4)
 * Scikit-learn (1.4.1.post1)
 * ptflops (0.7.3)
+
+## Citation
+
+Coming soon, see you at Discovery Science 2024, October 14-16 2024 | Pisa, Italy
