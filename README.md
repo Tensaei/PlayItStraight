@@ -28,4 +28,13 @@ This repository contains the code and resources for the research paper "Play it 
 
 ## Citation
 
-Coming soon, see you at Discovery Science 2024, October 14-16 2024 | Pisa, Italy
+```
+@inproceedings{scala/DS24/PlayItStraight,
+  title={Play it straight: An intelligent Data Pruning technique for Green-AI},
+  author={Francesco Scala and Sergio Flesca and Luigi Pontieri},
+  series={Lecture Notes in Computer Science},
+  publisher={Springer},
+  booktitle={27th International Conference, DS 2024, Pisa, Italy, October 14–16, 2024, Proceedings},
+  year={2024}
+}
+```
