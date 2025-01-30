@@ -29,12 +29,21 @@ This repository contains the code and resources for the research paper "Play it 
 ## Citation
 
 ```
-@inproceedings{scala/DS24/PlayItStraight,
-  title={Play it straight: An intelligent Data Pruning technique for Green-AI},
-  author={Francesco Scala and Sergio Flesca and Luigi Pontieri},
-  series={Lecture Notes in Computer Science},
-  publisher={Springer},
-  booktitle={27th International Conference, DS 2024, Pisa, Italy, October 14–16, 2024, Proceedings},
-  year={2024}
+@InProceedings{10.1007/978-3-031-78977-9_5,
+author="Scala, Francesco
+and Flesca, Sergio
+and Pontieri, Luigi",
+editor="Pedreschi, Dino
+and Monreale, Anna
+and Guidotti, Riccardo
+and Pellungrini, Roberto
+and Naretto, Francesca",
+title="Play it Straight: An Intelligent Data Pruning Technique for Green-AI",
+booktitle="Discovery Science",
+year="2025",
+publisher="Springer Nature Switzerland",
+address="Cham",
+pages="69--85",
+isbn="978-3-031-78977-9"
 }
 ```
