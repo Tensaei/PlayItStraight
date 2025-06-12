@@ -1,6 +1,6 @@
 import argparse
 
-from utils import *
+from .utils import *
 
 
 parser = argparse.ArgumentParser(description='Parameter Processing')

@@ -1,8 +1,8 @@
 import random
-import nets
+from src.play_it_stright import nets
 import torch
-import datasets as datasets
-import methods as methods
+from src.play_it_stright import datasets
+from src.play_it_stright import methods
 import numpy as np
 import torch.optim as optim
 
