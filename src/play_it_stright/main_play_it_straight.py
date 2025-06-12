@@ -6,6 +6,9 @@ from src.play_it_stright import methods
 import numpy as np
 import torch.optim as optim
 
+import warnings
+warnings.filterwarnings("ignore", category=UserWarning)
+
 from torch.utils.data import DataLoader
 from codecarbon import EmissionsTracker
 from src.play_it_stright.support.support import clprint, Reason
@@ -22,13 +25,12 @@ torch.backends.cudnn.deterministic = True
 
 if __name__ == "__main__":
     args = parser.parse_args()
-    if args.gpu:
-        if len(args.gpu) > 1:
-            cuda = "cuda"
-        else:
-            cuda = f"cuda:{args.gpu[0]}"
-    else:
-        cuda = ""
+    cuda = ""
+    if len(args.gpu) > 1:
+        cuda = "cuda"
+
+    elif len(args.gpu) == 1:
+        cuda = "cuda:"+str(args.gpu[0])
 
     if args.dataset == "ImageNet":
         args.device = cuda if torch.cuda.is_available() else "cpu"
