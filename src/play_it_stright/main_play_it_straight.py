@@ -12,7 +12,7 @@ from src.play_it_stright.support.support import clprint, Reason
 from src.play_it_stright.support.rs2 import split_dataset_for_rs2
 from src.play_it_stright.support.utils import *
 from src.play_it_stright.support.arguments import parser
-from ptflops import get_model_complexity_info # type: ignore
+from ptflops import get_model_complexity_info
 
 
 random.seed(0)
@@ -22,12 +22,13 @@ torch.backends.cudnn.deterministic = True
 
 if __name__ == "__main__":
     args = parser.parse_args()
-    cuda = ""
-    if len(args.gpu) > 1:
-        cuda = "cuda"
-
-    elif len(args.gpu) == 1:
-        cuda = "cuda:"+str(args.gpu[0])
+    if args.gpu:
+        if len(args.gpu) > 1:
+            cuda = "cuda"
+        else:
+            cuda = f"cuda:{args.gpu[0]}"
+    else:
+        cuda = ""
 
     if args.dataset == "ImageNet":
         args.device = cuda if torch.cuda.is_available() else "cpu"
