@@ -1,0 +1,49 @@
+­### 1 - Introduction
+In recent years, the concept of Green AI has gained increasingly relevance in the field of artificial intelligence. As large-scale deep learning models continue to grow in size and computational demands, concerns regarding their energy consumption and environmental impact have become the center to both academic research and public discourse. One promising approach to mitigating these issues is dataset pruning­–reduction of training datasets to decrease energy usage without significantly compromising model performance.
+The study “Play it Straight: An Intelligent Data Pruning Technique for Green-AI” by Scala et al. (2025) investigates how selective training on informative data subsets can lead to energy-efficient models while maintaining high accuracy. Their experiments on the CIFAR-10 and CIFAR-100 datasets demonstrate that carefully pruned datasets can achieve competitive results with significantly lower resource consumption.
+This paper aims to reproduce the core experiment of Scala et al. (2025), but applies the pruning method to a different dataset –*Fashion-MNIST*–and conducts all experiments on significantly less powerful hardware. The objective is to evaluate whether the energy-saving benefits and model stability reported in the original study can be generalized to simpler datasets and low-performance computing environments.
+In addition to comparing classification accuracy, this work also measures training time and energy consumption using the open-source tool ‘CodeCarbon’. The results are discussed with respect to their ‘practical relevance’ and the ‘transferability’ of pruning methods to resource-constrained settings.
+The central research question guiding this work is:
+** To what extent can dataset pruning techniques maintain model performance and reduce energy consumption when applied to a simplet dataset and executed on low-end hardware?**
+In addition to comparing classification accuracy, this work also measures training time and energy consumption using the open-source tool *CodeCarbon. The results are discussed with respect to their **practical relevance* and the *transferability* of pruning methods to resource-constrained settings.
+/*
+*	Platz für Ablauf: Fließtest
+*
+*/
+### 2 - Background and Related Work
+Recent effort in of machine learning have increasingly addressed the environmental footprint of training large-scale models. Schwartz et al. (2019) Introduced the term “Green AI” to advocate for approaches that optimize not only for accuracy but also for computational efficiency. This shift in focus has led to a growing interest in techniques aimed at reducing resource usage, including quantization, model distillation, and data pruning.
+Among these, *data pruning* has emerged as a particularly promising strategy. Paul et al. (2021), for instance, proposed the “EL2N score” to identify the most informative data points early in training, enabling effective dataset reduction without a significant drop in model performance. Similarly, Mirzasoleiman et al. (2020) introduced the *CRAIG algorithm*, which selects core subsets of data that best preserve the learning dynamics of the full dataset. Both studies showed that training on strategically selected subsets can yield performance comparable to that of the full dataset–while potentially lowering computational cost.
+Scala et al. (2025) extends this line of research by introducing a simple yet effective pruning method based on early training loss statistics, allowing the model to ignore less informative examples. Their experiments with ResNet architectures on CIFAR-10 and CIFAR-100 validated this approach, reporting energy reduction of over 40% while maintaining target accuracy.
+However, existing work has primarily focused on large, color image datasets and training on high-performance GPU-based hardware. This leaves open the question of whether similar efficiency gains can be achieved with simpler, grayscale datasets–and under more constrained hardware conditions. This paper aims to address this gap by applying Scala et al.’s pruning method to *Fashion-MNIST* and evaluate its performance on lower-end customer hardware.
+By examining both the *methodological foundation* and *practical implications* of data pruning, this paper provides a basis for the experimental work that follows.
+
+
+
+
+### 3 – Methodology
+To evaluate the generalizability of Scala et al.’s (2025) pruning method under constrained conditions, this study applies the technique to the *Fashion–MNIST* dataset and conducts all training experiments on a low-end customer laptop. The following subsections describe the dataset, model architecture, pruning approach, experimental setup, and evaluation metrics.
+#### 3.1 Dataset
+Fashion-MNIST is a grayscale image classification dataset consisting of 60,000 training and 10,000 test images across 10 categories of clothing. Unlike CIFAR-10 or CIFAR-100, Fashion-MNIST contrains 28x28 pixel images and is significantly less comples, which makes it suitable for experimentation on limited hardware.
+#### 3.2 Model Architecture
+A simple convolutional neural network (CNN) with two convolutional layers, max-pooling, and two fully connected layers is used as the classification model. The architecture is intentionally kept lightweight to reflect typical setups on non-GPU hardware.
+#### 3.3 Pruning Method
+This study implements the pruning strategy described by Scala et al. (2025) which ranks training samples based on their average early loss values during their first epochs. Samples with the lowest cumulative loss are considered less informative and removed form the training set. Three dataset configurations are tested:
+- *Baseline*: 100% of training data (no pruning) 
+- *Pruned-90*: to 90% of informative samples
+- *Pruned-80*: top 70% of informative samples
+The pruning is applied after collecting early loss statistics during a warm-up phase of 5 epochs.
+#### 3.4 Hardware Setup
+All experiments are conducted on a *MacBook Pro A1502 (2015)* with the following hardware configuration:
+- *CPU*	: Intel Core i5-5257U (dual-core, 2.7GHz)
+- *RAM*	: 8 GB DDR3
+- *GPU*	: Integrated Intel Iris Graphics 6100 (iGPU, no dedicated GPU)
+- *Operating System* : Ubuntu 24.04 LTS
+This system represents a low-resource computing environment, with limited memory and no access to hardware acceleration (e.g., CUDA or Tensor cores). All model training was performed on CPU using PyTorch’s default CPU backend.
+#### 3.5 Energy Measurement
+Energy consumption during training is monitored using the open-source tool *CodeCarbon*, which estimates carbon emission and energy usage based on system configuration and process time. The tool is integrated directly into the training loop to log consumption data for each experimental tun.
+#### 3.6 Evaluation Metrics
+Each mdel is evaluated based on:
+- *Classification accuracy* on the test set
+- *Total training time* in seconds (s)
+- *Total energy consumption* in kilowatt-hours (kWh)
+The results are compared across the three configurations to assess the impact of pruning on model performance and energy efficiency.
