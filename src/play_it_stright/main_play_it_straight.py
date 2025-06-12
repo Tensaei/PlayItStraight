@@ -12,7 +12,7 @@ from src.play_it_stright.support.support import clprint, Reason
 from src.play_it_stright.support.rs2 import split_dataset_for_rs2
 from src.play_it_stright.support.utils import *
 from src.play_it_stright.support.arguments import parser
-from ptflops import get_model_complexity_info
+from ptflops import get_model_complexity_info # type: ignore
 
 
 random.seed(0)
