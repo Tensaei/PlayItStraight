@@ -14,10 +14,10 @@ def split_dataset_for_rs2(dst_train, args):
         split_set = indices[i * size_batches:(i + 1) * size_batches]
         dst_subset = torch.utils.data.Subset(dst_train, split_set)
         if args.dataset == "ImageNet" or args.dataset == "ImageNet30":
-            train_loader = DataLoaderX(dst_subset, batch_size=args.batch_size, shuffle=True, num_workers=args.workers, pin_memory=False)
+            train_loader = DataLoaderX(dst_subset, batch_size=args.batch_size, shuffle=True, num_workers=args.workers, pin_memory=args.device != "cpu")
 
         else:
-            train_loader = torch.utils.data.DataLoader(dst_subset, batch_size=args.batch_size, shuffle=True, num_workers=args.workers, pin_memory=False)
+            train_loader = torch.utils.data.DataLoader(dst_subset, batch_size=args.batch_size, shuffle=True, num_workers=args.workers, pin_memory=args.device != "cpu")
 
         result.append(train_loader)
 

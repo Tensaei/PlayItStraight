@@ -44,12 +44,12 @@ if __name__ == "__main__":
     print("im_size: ", dst_train[0][0].shape)
     # BackgroundGenerator for ImageNet to speed up dataloaders
     if args.dataset == "ImageNet" or args.dataset == "ImageNet30":
-        train_loader = DataLoaderX(dst_train, batch_size=args.batch_size, shuffle=True, num_workers=args.workers, pin_memory=False)
-        test_loader = DataLoaderX(dst_test, batch_size=args.test_batch_size, shuffle=False, num_workers=args.workers, pin_memory=False)
+        train_loader = DataLoaderX(dst_train, batch_size=args.batch_size, shuffle=True, num_workers=args.workers, pin_memory=args.device != "cpu")
+        test_loader = DataLoaderX(dst_test, batch_size=args.test_batch_size, shuffle=False, num_workers=args.workers, pin_memory=args.device != "cpu")
 
     else:
-        train_loader = torch.utils.data.DataLoader(dst_train, batch_size=args.batch_size, shuffle=True, num_workers=args.workers, pin_memory=False)
-        test_loader = torch.utils.data.DataLoader(dst_test, batch_size=args.test_batch_size, shuffle=False, num_workers=args.workers, pin_memory=False)
+        train_loader = torch.utils.data.DataLoader(dst_train, batch_size=args.batch_size, shuffle=True, num_workers=args.workers, pin_memory=args.device != "cpu")
+        test_loader = torch.utils.data.DataLoader(dst_test, batch_size=args.test_batch_size, shuffle=False, num_workers=args.workers, pin_memory=args.device != "cpu")
 
     print("| Training on model %s" % args.model)
     network = get_model(args, nets, args.model)
@@ -124,10 +124,10 @@ if __name__ == "__main__":
 
         dst_subset = torch.utils.data.Subset(dst_train, labeled_set)
         if args.dataset == "ImageNet" or args.dataset == "ImageNet30":
-            train_loader = DataLoaderX(dst_subset, batch_size=args.batch_size, shuffle=True, num_workers=args.workers, pin_memory=False)
+            train_loader = DataLoaderX(dst_subset, batch_size=args.batch_size, shuffle=True, num_workers=args.workers, pin_memory=args.device != "cpu")
 
         else:
-            train_loader = torch.utils.data.DataLoader(dst_subset, batch_size=args.batch_size, shuffle=True, num_workers=args.workers, pin_memory=False)
+            train_loader = torch.utils.data.DataLoader(dst_subset, batch_size=args.batch_size, shuffle=True, num_workers=args.workers, pin_memory=args.device != "cpu")
 
         # Get optim configurations for Distrubted SGD
         criterion, optimizer, scheduler, rec = get_optim_configurations(args, network, train_loader)
