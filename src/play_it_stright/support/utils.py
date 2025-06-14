@@ -53,7 +53,11 @@ def train(train_loader, network, criterion, optimizer, scheduler, epoch, args, r
         # Compute gradient and do SGD step
         loss.backward()
         optimizer.step()
-        scheduler.step()
+        try:
+            scheduler.step()
+        except ZeroDivisionError:
+            # T_max == 0 (z.B. --epochs 0) → Scheduler überspringen
+            pass
         # Measure elapsed time
         batch_time.update(time.time() - end)
         end = time.time()

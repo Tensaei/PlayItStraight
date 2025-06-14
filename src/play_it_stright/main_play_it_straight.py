@@ -21,6 +21,8 @@ from ptflops import get_model_complexity_info
 random.seed(0)
 torch.manual_seed(0)
 torch.backends.cudnn.deterministic = True
+tracker = EmissionsTracker()
+tracker.start()
 
 
 if __name__ == "__main__":
@@ -56,9 +58,7 @@ if __name__ == "__main__":
     macs, params = get_model_complexity_info(network, (channel, im_size[0], im_size[1]), as_strings=True, print_per_layer_stat=False, verbose=False)
     print("{:<30}  {:<8}".format("MACs: ", macs))
     print("{:<30}  {:<8}".format("Number of parameters: ", params))
-    # Tracker for energy consumption calculation 
-    tracker = EmissionsTracker()
-    tracker.start()
+
     # RS2 boot training
     print("==================== RS2 boot training ====================")
     print("RS2 split size: {}".format(int(len(dst_train) / args.n_split)))
